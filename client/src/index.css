@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Amiri:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-slate-50 text-slate-900 dark:bg-slate-900 dark:text-white;
+    font-family: 'Inter', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+  }
+
+  .arabic-text {
+    font-family: 'Amiri', serif;
+    direction: rtl;
+  }
+
+  .notification-dot {
+    @apply absolute top-0 right-0 h-2 w-2 bg-red-500 rounded-full;
+  }
+
+  .islamic-pattern {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Crect width='56' height='100' fill='%23f8f9fa'%3E%3C/rect%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23e2e8f0' stroke-width='2'%3E%3C/path%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%23e2e8f0' stroke-width='2'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 56px 100px;
+    opacity: 0.1;
+  }
+
+  .offline-indicator {
+    @apply bg-red-500/10 border-l-4 border-red-500;
+  }
+}
+
+@layer components {
+  .prayer-card {
+    @apply bg-white dark:bg-slate-800 rounded-lg shadow-sm p-4 border border-slate-200 dark:border-slate-700 flex flex-col;
+  }
+
+  .prayer-time {
+    @apply text-sm px-2 py-1 rounded-full;
+  }
+
+  .prayer-time-upcoming {
+    @apply bg-primary-light text-primary;
+  }
+
+  .prayer-time-active {
+    @apply bg-accent-light text-accent;
+  }
+
+  .prayer-time-completed {
+    @apply bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300;
+  }
+
+  .prayer-action-button {
+    @apply rounded-full px-3 py-1 text-sm font-medium flex-grow flex items-center justify-center;
+  }
+
+  .prayer-action-primary {
+    @apply bg-primary text-white;
+  }
+
+  .prayer-action-secondary {
+    @apply bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300;
+  }
+
+  .quran-card {
+    @apply bg-primary/5 dark:bg-primary/10 rounded-lg p-4;
+  }
+
+  .achievement-icon {
+    @apply w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-3;
+  }
+
+  .achievement-icon-completed {
+    @apply bg-primary/10;
+  }
+
+  .achievement-icon-progress {
+    @apply bg-accent/10;
+  }
+
+  .achievement-icon-locked {
+    @apply bg-slate-100 dark:bg-slate-700;
+  }
+
+  .achievement-badge {
+    @apply inline-block text-xs px-2 py-1 rounded-full;
+  }
+
+  .achievement-badge-completed {
+    @apply bg-primary text-white;
+  }
+
+  .achievement-badge-progress {
+    @apply bg-accent text-white;
+  }
+
+  .achievement-badge-locked {
+    @apply bg-slate-200 dark:bg-slate-600 text-slate-600 dark:text-slate-300;
+  }
+
+  .community-group-card {
+    @apply flex items-center mb-4 pb-4 border-b border-slate-100 dark:border-slate-700;
+  }
+
+  .community-group-icon {
+    @apply flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center mr-4;
+  }
+
+  .bottom-nav-button {
+    @apply flex flex-col items-center py-1 px-3;
+  }
+
+  .bottom-nav-button-active {
+    @apply text-primary;
+  }
+
+  .bottom-nav-button-inactive {
+    @apply text-slate-500;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.5s ease-out;
+}
