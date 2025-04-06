@@ -8,7 +8,7 @@ export function useAchievements() {
   const { data: achievements = [], isLoading, error } = useQuery<Achievement[]>({
     queryKey: ['/api/achievements'],
     queryFn: async () => {
-      return apiRequest('GET', '/api/achievements');
+      return apiRequest<Achievement[]>('GET', '/api/achievements');
     }
   });
 

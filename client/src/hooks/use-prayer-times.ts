@@ -11,13 +11,13 @@ export function usePrayerTimes(date: Date) {
   const { data: prayers = [], isLoading, error } = useQuery<Prayer[]>({
     queryKey: ['/api/prayers/daily', formattedDate],
     queryFn: async () => {
-      return apiRequest('GET', `/api/prayers/daily?date=${formattedDate}`);
+      return apiRequest<Prayer[]>('GET', `/api/prayers/daily?date=${formattedDate}`);
     }
   });
 
   const createPrayerMutation = useMutation({
     mutationFn: async (prayer: InsertPrayer) => {
-      return apiRequest('POST', '/api/prayers', prayer);
+      return apiRequest<Prayer>('POST', '/api/prayers', prayer);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/prayers/daily'] });
@@ -26,7 +26,7 @@ export function usePrayerTimes(date: Date) {
 
   const updatePrayerMutation = useMutation({
     mutationFn: async ({ id, prayer }: { id: number; prayer: Partial<Prayer> }) => {
-      return apiRequest('PATCH', `/api/prayers/${id}`, prayer);
+      return apiRequest<Prayer>('PATCH', `/api/prayers/${id}`, prayer);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/prayers/daily'] });

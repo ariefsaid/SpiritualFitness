@@ -49,11 +49,11 @@
   }
 
   .prayer-time-upcoming {
-    @apply bg-primary-light text-primary;
+    @apply bg-primary/10 text-primary;
   }
 
   .prayer-time-active {
-    @apply bg-accent-light text-accent;
+    @apply bg-accent/10 text-accent;
   }
 
   .prayer-time-completed {

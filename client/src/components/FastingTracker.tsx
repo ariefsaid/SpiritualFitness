@@ -24,7 +24,8 @@ export default function FastingTracker() {
   
   const handleTrackFasting = () => {
     createFasting({
-      date: new Date(newFasting.date),
+      date: newFasting.date,
+      userId: 1, // Default user ID
       type: newFasting.type,
       isCompleted: true,
       notes: ""
@@ -134,13 +135,13 @@ export default function FastingTracker() {
           </p>
           <div className="flex flex-wrap gap-2">
             {completedFastings.some(f => f.type === "monday") && (
-              <span className="bg-primary-light text-primary text-xs px-2 py-1 rounded-full">Monday Fast ✓</span>
+              <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Monday Fast ✓</span>
             )}
             {completedFastings.some(f => f.type === "thursday") && (
-              <span className="bg-primary-light text-primary text-xs px-2 py-1 rounded-full">Thursday Fast ✓</span>
+              <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Thursday Fast ✓</span>
             )}
             {completedFastings.some(f => f.type === "ayyamBeed") ? (
-              <span className="bg-primary-light text-primary text-xs px-2 py-1 rounded-full">Ayyam al-Beed ✓</span>
+              <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full">Ayyam al-Beed ✓</span>
             ) : (
               <span className="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs px-2 py-1 rounded-full">Ayyam al-Beed</span>
             )}

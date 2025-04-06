@@ -15,13 +15,13 @@ export function useFasting() {
   const { data: fastings = [], isLoading, error } = useQuery<Fasting[]>({
     queryKey: ['/api/fastings', startDate, endDate],
     queryFn: async () => {
-      return apiRequest('GET', `/api/fastings?startDate=${startDate}&endDate=${endDate}`);
+      return apiRequest<Fasting[]>('GET', `/api/fastings?startDate=${startDate}&endDate=${endDate}`);
     }
   });
 
   const createFastingMutation = useMutation({
     mutationFn: async (fasting: InsertFasting) => {
-      return apiRequest('POST', '/api/fastings', fasting);
+      return apiRequest<Fasting>('POST', '/api/fastings', fasting);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/fastings'] });
@@ -30,7 +30,7 @@ export function useFasting() {
 
   const updateFastingMutation = useMutation({
     mutationFn: async ({ id, fasting }: { id: number; fasting: Partial<Fasting> }) => {
-      return apiRequest('PATCH', `/api/fastings/${id}`, fasting);
+      return apiRequest<Fasting>('PATCH', `/api/fastings/${id}`, fasting);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/fastings'] });

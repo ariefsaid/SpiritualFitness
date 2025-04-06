@@ -1,7 +1,9 @@
 const CACHE_NAME = 'spiritualfit-v1';
-const STATIC_ASSETS = [
+const OFFLINE_URL = '/offline.html';
+const OFFLINE_CACHE_URLS = [
   '/',
   '/index.html',
+  '/offline.html',
   '/manifest.json',
   '/icons/icon-72.png',
   '/icons/icon-96.png',
@@ -10,23 +12,18 @@ const STATIC_ASSETS = [
   '/icons/icon-152.png',
   '/icons/icon-192.png',
   '/icons/icon-384.png',
-  '/icons/icon-512.png',
+  '/icons/icon-512.png'
 ];
 
-// API routes that should be cached for offline use
-const API_CACHE_ROUTES = [
-  '/api/quotes/random',
-  '/api/quotes/category/motivation',
-  '/api/challenges',
-  '/api/community/groups',
-];
-
-// Install event - cache static assets
+// Install event - cache essential files for offline use
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
-    })
+    caches.open(CACHE_NAME)
+      .then((cache) => {
+        console.log('Opened cache');
+        return cache.addAll(OFFLINE_CACHE_URLS);
+      })
+      .then(() => self.skipWaiting())
   );
 });
 
@@ -37,164 +34,176 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
+            console.log('Deleting old cache:', cacheName);
             return caches.delete(cacheName);
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
-// Background sync for offline operations
-self.addEventListener('sync', (event) => {
-  if (event.tag === 'syncOfflineData') {
-    event.waitUntil(syncOfflineData());
-  }
-});
-
-// Helper function to synchronize offline data
-async function syncOfflineData() {
-  try {
-    const response = await fetch('/api/sync/pending');
-    if (response.ok) {
-      const pendingSyncs = await response.json();
-      
-      for (const sync of pendingSyncs) {
-        try {
-          const syncResponse = await fetch(sync.endpoint, {
-            method: sync.method,
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(sync.payload),
-          });
-          
-          if (syncResponse.ok) {
-            // Mark sync as completed
-            await fetch(`/api/sync/${sync.id}`, {
-              method: 'PUT',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ status: 'completed' }),
-            });
-          }
-        } catch (error) {
-          console.error('Error syncing item:', error);
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Error fetching pending sync items:', error);
-  }
-}
-
-// Fetch event - serve from cache and update cache with network response
+// Fetch event - serve from cache, fallback to network
 self.addEventListener('fetch', (event) => {
   // Skip cross-origin requests
   if (!event.request.url.startsWith(self.location.origin)) {
     return;
   }
 
-  // For API requests
+  // For API requests, try network first, then cache
   if (event.request.url.includes('/api/')) {
-    // Check if this is a cacheable API route
-    const isCacheableApiRoute = API_CACHE_ROUTES.some(route => 
-      event.request.url.includes(route));
-    
-    if (isCacheableApiRoute) {
-      // Network first, fallback to cache strategy for cacheable API routes
-      event.respondWith(
-        fetch(event.request)
-          .then(response => {
-            const responseClone = response.clone();
-            caches.open(CACHE_NAME).then(cache => {
-              cache.put(event.request, responseClone);
-            });
+    event.respondWith(
+      fetch(event.request)
+        .then((response) => {
+          return caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, response.clone());
             return response;
-          })
-          .catch(() => {
-            return caches.match(event.request);
-          })
-      );
-    } else if (event.request.method === 'GET') {
-      // For non-cacheable GET API routes, try network, but don't cache
-      event.respondWith(
-        fetch(event.request).catch(() => {
+          });
+        })
+        .catch(() => {
           return caches.match(event.request);
         })
-      );
-    }
+    );
     return;
   }
 
-  // For non-API requests (static assets, HTML, etc.)
+  // For non-API requests, try cache first
   event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      // Return cached response if available
-      if (cachedResponse) {
-        // Try to update the cache in the background
-        fetch(event.request).then(response => {
-          caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, response);
-          });
-        }).catch(() => {
-          // Silently fail - we already have the cached version
-        });
-        
-        return cachedResponse;
-      }
-
-      // Otherwise, fetch from network
-      return fetch(event.request).then(response => {
-        // Don't cache non-successful responses
-        if (!response || response.status !== 200 || response.type !== 'basic') {
+    caches.match(event.request)
+      .then((response) => {
+        if (response) {
           return response;
         }
-
-        // Clone the response as it can only be consumed once
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then(cache => {
-          cache.put(event.request, responseToCache);
+        
+        return fetch(event.request).then((response) => {
+          // Cache successful responses
+          if (response && response.status === 200 && response.type === 'basic') {
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, response.clone());
+            });
+          }
+          
+          return response;
+        }).catch(() => {
+          // If both cache and network fail, serve the offline page
+          if (event.request.mode === 'navigate') {
+            return caches.match(OFFLINE_URL);
+          }
         });
-
-        return response;
-      });
-    })
+      })
   );
 });
 
-// Push notification event
+// Background sync for offline operations
+self.addEventListener('sync', (event) => {
+  if (event.tag === 'sync-offline-data') {
+    event.waitUntil(syncOfflineData());
+  }
+});
+
+// Push notification handler
 self.addEventListener('push', (event) => {
   const data = event.data.json();
+  
+  const title = data.title || 'SpiritualFit';
   const options = {
-    body: data.body,
-    icon: 'icons/icon-192.png',
-    badge: 'icons/icon-72.png',
-    vibrate: [100, 50, 100],
-    data: {
-      url: data.url || '/',
-    },
+    body: data.body || 'New notification',
+    icon: '/icons/icon-192.png',
+    badge: '/icons/icon-72.png'
   };
-
-  event.waitUntil(
-    self.registration.showNotification(data.title, options)
-  );
+  
+  event.waitUntil(self.registration.showNotification(title, options));
 });
 
-// Notification click event
+// Notification click handler
 self.addEventListener('notificationclick', (event) => {
   event.notification.close();
   
   event.waitUntil(
     clients.matchAll({ type: 'window' }).then((clientList) => {
-      // Check if there's already a window open
+      // If already open, focus that client
       for (const client of clientList) {
-        if (client.url === event.notification.data.url && 'focus' in client) {
+        if (client.url.includes(self.location.origin) && 'focus' in client) {
           return client.focus();
         }
       }
       
-      // Otherwise, open a new window
+      // If not open, open a new window
       if (clients.openWindow) {
-        return clients.openWindow(event.notification.data.url);
+        return clients.openWindow('/');
       }
     })
   );
 });
+
+// Handle offline data synchronization
+async function syncOfflineData() {
+  try {
+    const offlineData = await fetchOfflineDataFromIndexedDB();
+    
+    for (const item of offlineData) {
+      try {
+        // Attempt to sync each item with the server
+        await fetch(item.endpoint, {
+          method: item.method,
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(item.payload)
+        });
+        
+        // If successful, remove from IndexedDB
+        await removeFromIndexedDB(item.id);
+      } catch (err) {
+        console.error('Failed to sync item:', item, err);
+      }
+    }
+  } catch (err) {
+    console.error('Error syncing offline data:', err);
+  }
+}
+
+// Fetch offline data from IndexedDB
+async function fetchOfflineDataFromIndexedDB() {
+  return new Promise((resolve, reject) => {
+    const openRequest = indexedDB.open('spiritualfit-offline', 1);
+    
+    openRequest.onerror = () => reject(openRequest.error);
+    
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      const transaction = db.transaction('sync-data', 'readonly');
+      const store = transaction.objectStore('sync-data');
+      const request = store.getAll();
+      
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
+    };
+    
+    openRequest.onupgradeneeded = (event) => {
+      const db = event.target.result;
+      if (!db.objectStoreNames.contains('sync-data')) {
+        db.createObjectStore('sync-data', { keyPath: 'id', autoIncrement: true });
+      }
+    };
+  });
+}
+
+// Remove synced item from IndexedDB
+async function removeFromIndexedDB(id) {
+  return new Promise((resolve, reject) => {
+    const openRequest = indexedDB.open('spiritualfit-offline', 1);
+    
+    openRequest.onerror = () => reject(openRequest.error);
+    
+    openRequest.onsuccess = () => {
+      const db = openRequest.result;
+      const transaction = db.transaction('sync-data', 'readwrite');
+      const store = transaction.objectStore('sync-data');
+      const request = store.delete(id);
+      
+      request.onsuccess = () => resolve();
+      request.onerror = () => reject(request.error);
+    };
+  });
+}

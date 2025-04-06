@@ -9,20 +9,20 @@ export function useQuran() {
   const { data: readings = [], isLoading: readingsLoading } = useQuery<QuranReading[]>({
     queryKey: ['/api/quran/readings'],
     queryFn: async () => {
-      return apiRequest('GET', '/api/quran/readings');
+      return apiRequest<QuranReading[]>('GET', '/api/quran/readings');
     }
   });
 
   const { data: latestReading, isLoading: latestLoading } = useQuery<QuranReading>({
     queryKey: ['/api/quran/readings/latest'],
     queryFn: async () => {
-      return apiRequest('GET', '/api/quran/readings/latest');
+      return apiRequest<QuranReading>('GET', '/api/quran/readings/latest');
     }
   });
 
   const createReadingMutation = useMutation({
     mutationFn: async (reading: InsertQuranReading) => {
-      return apiRequest('POST', '/api/quran/readings', reading);
+      return apiRequest<QuranReading>('POST', '/api/quran/readings', reading);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/quran/readings'] });
@@ -32,7 +32,7 @@ export function useQuran() {
 
   const updateReadingMutation = useMutation({
     mutationFn: async ({ id, reading }: { id: number; reading: Partial<QuranReading> }) => {
-      return apiRequest('PATCH', `/api/quran/readings/${id}`, reading);
+      return apiRequest<QuranReading>('PATCH', `/api/quran/readings/${id}`, reading);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/quran/readings'] });
