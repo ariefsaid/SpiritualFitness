@@ -80,7 +80,16 @@ function App() {
         <BottomNav />
         
         {shouldShowInstallPrompt && (
-          <PwaInstallPrompt onInstall={installApp} onDismiss={dismissPrompt} />
+          <PwaInstallPrompt 
+            onInstall={() => {
+              console.log('Installing PWA...');
+              installApp();
+            }} 
+            onDismiss={() => {
+              console.log('Dismissed PWA install prompt');
+              dismissPrompt();
+            }} 
+          />
         )}
         
         <Toaster />

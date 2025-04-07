@@ -19,7 +19,11 @@ export function usePwaInstall() {
       setShouldShowInstallPrompt(true);
     };
 
-    window.addEventListener('beforeinstallprompt', handler);
+    console.log('Setting up PWA install prompt handler');
+    window.addEventListener('beforeinstallprompt', (e) => {
+      console.log('Received beforeinstallprompt event');
+      handler(e);
+    });
 
     return () => {
       window.removeEventListener('beforeinstallprompt', handler);
