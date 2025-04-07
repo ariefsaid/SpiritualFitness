@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="description" content="Spiritual Fitness - Track your spiritual journey">
+  <title>Spiritual Fitness</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container flex justify-between items-center">
+      <div class="flex items-center">
+        <img src="icons/icon.svg" alt="Logo" class="w-8 h-8 mr-2">
+        <h1 class="text-xl font-semibold">Spiritual Fitness</h1>
+      </div>
+      <div class="flex items-center">
+        <div class="dark-mode-toggle mr-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </div>
+        <div class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span class="notification-dot"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Offline Indicator -->
+  <div class="offline-indicator p-2 px-4 mb-2" style="display: none;">
+    <div class="flex items-center">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><line x1="1" y1="1" x2="23" y2="23"></line><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path><path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>
+      <span>You are offline. Some features may be limited.</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Dashboard Page -->
+    <div id="dashboard-page" class="page-container">
+      <div class="container py-4">
+        <!-- Daily Quote -->
+        <div class="bg-primary-light rounded-lg p-4 mb-6 relative overflow-hidden">
+          <div class="islamic-pattern absolute inset-0"></div>
+          <div class="relative z-10">
+            <div class="text-sm text-primary mb-2">Daily Inspiration</div>
+            <div class="text-lg font-medium mb-2">"The best among you are those who have the best character."</div>
+            <div class="text-sm text-gray-600">— Prophet Muhammad (PBUH)</div>
+          </div>
+        </div>
+
+        <!-- Today's Spiritual Workout -->
+        <section class="workout-section mb-6">
+          <h2 class="text-xl font-semibold mb-4">Today's Spiritual Workout</h2>
+          
+          <!-- Overall Progress -->
+          <div class="bg-white rounded-lg shadow-sm p-4 mb-4 border border-gray-200">
+            <div class="flex items-center">
+              <div class="overall-progress mr-4">
+                <div class="circular-progress" style="--value: 45">
+                  <div class="circular-progress-inner">45%</div>
+                </div>
+              </div>
+              <div>
+                <h3 class="font-semibold">Overall Progress</h3>
+                <p class="text-sm text-gray-600">Keep going! You're doing great.</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Workout Cards -->
+          <div class="grid grid-cols-1 gap-4">
+            <!-- Prayer Workout -->
+            <div class="workout-card workout-card-active" data-type="prayer">
+              <div class="workout-card-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                <span>Daily Prayers</span>
+              </div>
+              <div class="workout-card-progress">
+                <div class="circular-progress" style="--value: 60">
+                  <div class="circular-progress-inner">60%</div>
+                </div>
+              </div>
+              <div class="workout-card-footer">
+                <span class="workout-complete">3</span> / <span>5</span> prayers completed
+              </div>
+            </div>
+            
+            <!-- Quran Workout -->
+            <div class="workout-card" data-type="quran">
+              <div class="workout-card-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                <span>Quran Reading</span>
+              </div>
+              <div class="workout-card-progress">
+                <div class="circular-progress" style="--value: 25">
+                  <div class="circular-progress-inner">25%</div>
+                </div>
+              </div>
+              <div class="workout-card-footer">
+                <span class="workout-complete">1</span> / <span>4</span> pages read
+              </div>
+            </div>
+            
+            <!-- Fasting Workout -->
+            <div class="workout-card" data-type="fasting">
+              <div class="workout-card-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <span>Fasting</span>
+              </div>
+              <div class="workout-card-progress">
+                <div class="circular-progress" style="--value: 0">
+                  <div class="circular-progress-inner">0%</div>
+                </div>
+              </div>
+              <div class="workout-card-footer">
+                Not fasting today
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Prayer Times -->
+        <section class="prayer-section mb-6">
+          <h2 class="text-xl font-semibold mb-4">Prayer Times</h2>
+          <div class="grid grid-cols-1 gap-4">
+            <!-- Fajr -->
+            <div class="prayer-card" data-prayer="fajr" data-time="05:15">
+              <div class="flex justify-between items-center mb-2">
+                <div class="font-medium">Fajr</div>
+                <div class="prayer-time prayer-time-completed">5:15 AM</div>
+              </div>
+              <div class="flex justify-between items-center">
+                <button class="prayer-action-button prayer-action-secondary" data-action="undo">Completed</button>
+              </div>
+            </div>
+            
+            <!-- Dhuhr -->
+            <div class="prayer-card" data-prayer="dhuhr" data-time="12:30">
+              <div class="flex justify-between items-center mb-2">
+                <div class="font-medium">Dhuhr</div>
+                <div class="prayer-time prayer-time-completed">12:30 PM</div>
+              </div>
+              <div class="flex justify-between items-center">
+                <button class="prayer-action-button prayer-action-secondary" data-action="undo">Completed</button>
+              </div>
+            </div>
+            
+            <!-- Asr -->
+            <div class="prayer-card" data-prayer="asr" data-time="15:45">
+              <div class="flex justify-between items-center mb-2">
+                <div class="font-medium">Asr</div>
+                <div class="prayer-time prayer-time-completed">3:45 PM</div>
+              </div>
+              <div class="flex justify-between items-center">
+                <button class="prayer-action-button prayer-action-secondary" data-action="undo">Completed</button>
+              </div>
+            </div>
+            
+            <!-- Maghrib -->
+            <div class="prayer-card" data-prayer="maghrib" data-time="18:30">
+              <div class="flex justify-between items-center mb-2">
+                <div class="font-medium">Maghrib</div>
+                <div class="prayer-time prayer-time-active">6:30 PM</div>
+              </div>
+              <div class="flex justify-between items-center">
+                <button class="prayer-action-button prayer-action-primary" data-action="mark-prayed">Mark as Prayed</button>
+              </div>
+            </div>
+            
+            <!-- Isha -->
+            <div class="prayer-card" data-prayer="isha" data-time="20:00">
+              <div class="flex justify-between items-center mb-2">
+                <div class="font-medium">Isha</div>
+                <div class="prayer-time prayer-time-upcoming">8:00 PM</div>
+              </div>
+              <div class="flex justify-between items-center">
+                <button class="prayer-action-button prayer-action-primary" data-action="mark-prayed">Mark as Prayed</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Fasting Tracker -->
+        <section class="fasting-section mb-6">
+          <h2 class="text-xl font-semibold mb-4">Fasting Tracker</h2>
+          <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+            <div class="flex flex-col">
+              <div class="flex justify-between items-center mb-4">
+                <div>
+                  <h3 class="font-semibold">Today's Fast</h3>
+                  <p class="text-sm text-gray-600">Monday, July 4, 2025</p>
+                </div>
+                <button class="fasting-toggle bg-primary text-white py-1 px-3 rounded-full text-sm font-medium">Start Fasting</button>
+              </div>
+              <div class="text-sm text-gray-600">
+                <div class="mb-2">
+                  <span class="font-medium">Suhoor:</span> 4:30 AM
+                </div>
+                <div>
+                  <span class="font-medium">Iftar:</span> 6:30 PM
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Quran Progress -->
+        <section class="mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Quran Progress</h2>
+            <a href="#quran" class="text-primary text-sm">View All</a>
+          </div>
+          <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+            <div class="mb-4">
+              <div class="flex justify-between items-center mb-2">
+                <div class="font-medium">Daily Goal</div>
+                <div class="quran-progress-text text-sm">1/4 pages</div>
+              </div>
+              <div class="w-full bg-gray-200 rounded-full h-2">
+                <div class="quran-progress-bar-inner bg-primary h-2 rounded-full" style="width: 25%"></div>
+              </div>
+            </div>
+            <div class="text-sm">
+              <div class="mb-2">
+                <span class="font-medium">Current Surah:</span> Al-Baqarah
+              </div>
+              <div>
+                <span class="font-medium">Last Read:</span> Page 8
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Community Section -->
+        <section class="mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Community</h2>
+            <a href="#community" class="text-primary text-sm">View All</a>
+          </div>
+          <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+            <div class="community-group-card">
+              <div class="community-group-icon bg-primary-light text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-medium">Ramadan Challenge</h3>
+                <p class="text-sm text-gray-600">42 members • 3 new posts</p>
+              </div>
+            </div>
+            <div class="community-group-card">
+              <div class="community-group-icon bg-accent-light text-accent">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-medium">Quran Study Circle</h3>
+                <p class="text-sm text-gray-600">28 members • 1 new post</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Achievements -->
+        <section class="mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold">Achievements</h2>
+            <a href="#profile" class="text-primary text-sm">View All</a>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 text-center achievement-item">
+              <div class="achievement-icon achievement-icon-unlocked">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+              </div>
+              <h3 class="font-medium">Early Riser</h3>
+              <p class="text-xs text-gray-500">Completed Fajr prayer for 7 days</p>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 text-center achievement-item">
+              <div class="achievement-icon achievement-icon-locked">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </div>
+              <h3 class="font-medium">Charity Champion</h3>
+              <p class="text-xs text-gray-500">Record 5 charitable acts</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Quran Reader Page -->
+    <div id="quran-page" class="page-container" style="display: none;">
+      <div class="container py-4">
+        <h2 class="text-xl font-semibold mb-4">Quran Reader</h2>
+        
+        <!-- Quran Progress -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-6">
+          <div class="mb-4">
+            <div class="flex justify-between items-center mb-2">
+              <div class="font-medium">Daily Goal</div>
+              <div class="quran-progress-text text-sm">1/4 pages</div>
+            </div>
+            <div class="w-full bg-gray-200 rounded-full h-2">
+              <div class="quran-progress-bar-inner bg-primary h-2 rounded-full" style="width: 25%"></div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Surah Selection -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-6">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-semibold">Continue Reading</h3>
+            <div class="text-sm text-primary">Page 8</div>
+          </div>
+          <div class="flex items-center">
+            <div class="mr-4 bg-primary-light text-primary rounded-full w-10 h-10 flex items-center justify-center">
+              2
+            </div>
+            <div>
+              <div class="font-medium">Al-Baqarah</div>
+              <div class="text-sm text-gray-600">The Cow • 286 Verses</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Reading Progress -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-6">
+          <h3 class="font-semibold mb-4">Reading Progress</h3>
+          <div class="grid grid-cols-4 gap-2">
+            <!-- Pages 1-8 -->
+            <div class="quran-progress-item completed">
+              <div class="bg-gray-100 rounded flex items-center justify-center h-12 relative">
+                <span>1</span>
+                <div class="quran-progress-check absolute inset-0 bg-primary-light rounded flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+            </div>
+            <div class="quran-progress-item">
+              <div class="bg-gray-100 rounded flex items-center justify-center h-12 relative">
+                <span>2</span>
+                <div class="quran-progress-check absolute inset-0 bg-primary-light rounded flex items-center justify-center" style="display: none;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+            </div>
+            <div class="quran-progress-item">
+              <div class="bg-gray-100 rounded flex items-center justify-center h-12 relative">
+                <span>3</span>
+                <div class="quran-progress-check absolute inset-0 bg-primary-light rounded flex items-center justify-center" style="display: none;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+            </div>
+            <div class="quran-progress-item">
+              <div class="bg-gray-100 rounded flex items-center justify-center h-12 relative">
+                <span>4</span>
+                <div class="quran-progress-check absolute inset-0 bg-primary-light rounded flex items-center justify-center" style="display: none;">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Quran Content -->
+        <div class="quran-card mb-6">
+          <div class="text-center mb-4">
+            <div class="font-semibold mb-2">Surah Al-Baqarah</div>
+            <div class="text-sm">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+          </div>
+          <div class="arabic-text text-xl text-right mb-4">
+            الم ﴿١﴾ ذَٰلِكَ الْكِتَابُ لَا رَيْبَ ۛ فِيهِ ۛ هُدًى لِّلْمُتَّقِينَ ﴿٢﴾ الَّذِينَ يُؤْمِنُونَ بِالْغَيْبِ وَيُقِيمُونَ الصَّلَاةَ وَمِمَّا رَزَقْنَاهُمْ يُنفِقُونَ ﴿٣﴾
+          </div>
+          <div class="text-sm text-gray-600 mb-4">
+            Alif, Lam, Meem. This is the Book about which there is no doubt, a guidance for those conscious of Allah - Who believe in the unseen, establish prayer, and spend out of what We have provided for them.
+          </div>
+          <div class="flex justify-between">
+            <button class="bg-gray-100 rounded-full p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 19 2 12 11 5 11 19"></polygon><polygon points="22 19 13 12 22 5 22 19"></polygon></svg>
+            </button>
+            <button class="bg-primary text-white rounded-full px-4 py-2 text-sm font-medium">
+              Mark as Read
+            </button>
+            <button class="bg-gray-100 rounded-full p-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 19 22 12 13 5 13 19"></polygon><polygon points="2 19 11 12 2 5 2 19"></polygon></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Page -->
+    <div id="calendar-page" class="page-container" style="display: none;">
+      <div class="container py-4">
+        <h2 class="text-xl font-semibold mb-4">Calendar</h2>
+        
+        <!-- Month Navigation -->
+        <div class="flex justify-between items-center mb-6">
+          <button class="p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          </button>
+          <h3 class="font-semibold">July 2025</h3>
+          <button class="p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
+        
+        <!-- Calendar Days -->
+        <div class="mb-6">
+          <!-- Weekdays -->
+          <div class="grid grid-cols-7 text-center mb-2">
+            <div class="text-sm text-gray-500">Su</div>
+            <div class="text-sm text-gray-500">Mo</div>
+            <div class="text-sm text-gray-500">Tu</div>
+            <div class="text-sm text-gray-500">We</div>
+            <div class="text-sm text-gray-500">Th</div>
+            <div class="text-sm text-gray-500">Fr</div>
+            <div class="text-sm text-gray-500">Sa</div>
+          </div>
+          
+          <!-- Week 1 -->
+          <div class="grid grid-cols-7 text-center mb-2">
+            <div class="calendar-day text-gray-400">29</div>
+            <div class="calendar-day text-gray-400">30</div>
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day calendar-day-has-event">3</div>
+            <div class="calendar-day calendar-day-current">4</div>
+            <div class="calendar-day">5</div>
+          </div>
+          
+          <!-- Week 2 -->
+          <div class="grid grid-cols-7 text-center mb-2">
+            <div class="calendar-day">6</div>
+            <div class="calendar-day">7</div>
+            <div class="calendar-day calendar-day-has-event">8</div>
+            <div class="calendar-day">9</div>
+            <div class="calendar-day">10</div>
+            <div class="calendar-day calendar-day-has-event">11</div>
+            <div class="calendar-day">12</div>
+          </div>
+          
+          <!-- Additional weeks would go here -->
+        </div>
+        
+        <!-- Today's Events -->
+        <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-6">
+          <h3 class="font-semibold mb-4">Today's Events</h3>
+          <div class="flex items-center mb-4">
+            <div class="w-2 h-2 bg-primary rounded-full mr-2"></div>
+            <div class="flex-grow">
+              <div class="font-medium">Community Iftar</div>
+              <div class="text-sm text-gray-600">6:30 PM - 8:00 PM</div>
+            </div>
+          </div>
+          <div class="flex items-center">
+            <div class="w-2 h-2 bg-accent rounded-full mr-2"></div>
+            <div class="flex-grow">
+              <div class="font-medium">Quran Study Circle</div>
+              <div class="text-sm text-gray-600">8:30 PM - 9:30 PM</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Community Page -->
+    <div id="community-page" class="page-container" style="display: none;">
+      <div class="container py-4">
+        <h2 class="text-xl font-semibold mb-4">Community</h2>
+        
+        <!-- Community Groups -->
+        <div class="mb-6">
+          <h3 class="font-semibold mb-4">Your Groups</h3>
+          <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 mb-4">
+            <div class="community-group-card">
+              <div class="community-group-icon bg-primary-light text-primary">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-medium">Ramadan Challenge</h3>
+                <p class="text-sm text-gray-600">42 members • 3 new posts</p>
+              </div>
+            </div>
+            <div class="community-group-card">
+              <div class="community-group-icon bg-accent-light text-accent">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-medium">Quran Study Circle</h3>
+                <p class="text-sm text-gray-600">28 members • 1 new post</p>
+              </div>
+            </div>
+            <div class="community-group-card" style="border-bottom: none; margin-bottom: 0; padding-bottom: 0;">
+              <div class="community-group-icon bg-success-light text-success">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <div>
+                <h3 class="font-medium">Daily Dhikr Group</h3>
+                <p class="text-sm text-gray-600">15 members • 5 new posts</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="mb-6">
+          <h3 class="font-semibold mb-4">Recent Activity</h3>
+          <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+            <div class="mb-4 pb-4 border-b border-gray-100">
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-full bg-primary-light text-primary flex items-center justify-center mr-2">A</div>
+                <div>
+                  <span class="font-medium">Ahmed</span>
+                  <span class="text-sm text-gray-600"> posted in </span>
+                  <span class="text-primary">Ramadan Challenge</span>
+                </div>
+              </div>
+              <div class="text-sm mb-2">
+                Alhamdulillah, completed my 10th day of fasting! The spiritual journey has been amazing so far.
+              </div>
+              <div class="flex text-sm text-gray-500">
+                <div class="mr-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                  12 likes
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                  5 comments
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="flex items-center mb-2">
+                <div class="w-8 h-8 rounded-full bg-accent-light text-accent flex items-center justify-center mr-2">F</div>
+                <div>
+                  <span class="font-medium">Fatima</span>
+                  <span class="text-sm text-gray-600"> shared a resource in </span>
+                  <span class="text-primary">Quran Study Circle</span>
+                </div>
+              </div>
+              <div class="text-sm mb-2">
+                Found this amazing tafsir resource for Surah Al-Baqarah. It's really helping me understand the deeper meanings.
+              </div>
+              <div class="flex text-sm text-gray-500">
+                <div class="mr-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                  8 likes
+                </div>
+                <div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline-block mr-1"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                  3 comments
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Upcoming Events -->
+        <div class="mb-6">
+          <h3 class="font-semibold mb-4">Upcoming Events</h3>
+          <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+            <div class="mb-4 pb-4 border-b border-gray-100">
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h4 class="font-medium">Community Iftar</h4>
+                  <p class="text-sm text-gray-600">Today, 6:30 PM - 8:00 PM</p>
+                </div>
+                <div class="bg-primary text-white text-xs px-2 py-1 rounded-full">Today</div>
+              </div>
+              <div class="text-sm">
+                Join us for a community iftar at the local mosque. Bring a dish to share if you can!
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between items-start mb-2">
+                <div>
+                  <h4 class="font-medium">Quran Study Circle</h4>
+                  <p class="text-sm text-gray-600">Today, 8:30 PM - 9:30 PM</p>
+                </div>
+                <div class="bg-primary text-white text-xs px-2 py-1 rounded-full">Today</div>
+              </div>
+              <div class="text-sm">
+                Weekly Quran study focusing on Surah Al-Baqarah. Open to all levels.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div id="profile-page" class="page-container" style="display: none;">
+      <div class="container py-4">
+        <!-- Profile Header -->
+        <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200 mb-6">
+          <div class="flex flex-col items-center">
+            <div class="mb-4">
+              <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-avatar">
+            </div>
+            <h2 class="text-xl font-semibold mb-1">Abdullah Ahmed</h2>
+            <p class="text-sm text-gray-600 mb-4">Jakarta, Indonesia</p>
+            <div class="flex justify-around w-full">
+              <div class="profile-stat">
+                <div class="profile-stat-value">42</div>
+                <div class="profile-stat-label">Days Active</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-value">7</div>
+                <div class="profile-stat-label">Achievements</div>
+              </div>
+              <div class="profile-stat">
+                <div class="profile-stat-value">3</div>
+                <div class="profile-stat-label">Groups</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Achievements -->
+        <div class="mb-6">
+          <h3 class="font-semibold mb-4">Achievements</h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 text-center achievement-item">
+              <div class="achievement-icon achievement-icon-unlocked">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+              </div>
+              <h3 class="font-medium">Early Riser</h3>
+              <p class="text-xs text-gray-500">Completed Fajr prayer for 7 days</p>
+              <div class="achievement-details mt-2 text-xs text-left" style="display: none;">
+                <p>You've consistently woken up for Fajr prayer for a full week! Your dedication to starting each day with prayer is admirable.</p>
+                <p class="mt-1">Earned on: June 28, 2025</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 text-center achievement-item">
+              <div class="achievement-icon achievement-icon-unlocked">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+              </div>
+              <h3 class="font-medium">Quran Enthusiast</h3>
+              <p class="text-xs text-gray-500">Read Quran for 5 consecutive days</p>
+              <div class="achievement-details mt-2 text-xs text-left" style="display: none;">
+                <p>You've maintained a daily Quran reading habit for 5 days straight! Your commitment to understanding the words of Allah is inspiring.</p>
+                <p class="mt-1">Earned on: July 1, 2025</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 text-center achievement-item">
+              <div class="achievement-icon achievement-icon-unlocked">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <h3 class="font-medium">Community Builder</h3>
+              <p class="text-xs text-gray-500">Joined 3 spiritual groups</p>
+              <div class="achievement-details mt-2 text-xs text-left" style="display: none;">
+                <p>You've become an active member of the spiritual community by joining 3 different groups! Your engagement helps build a stronger ummah.</p>
+                <p class="mt-1">Earned on: June 25, 2025</p>
+              </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200 text-center achievement-item">
+              <div class="achievement-icon achievement-icon-locked">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+              </div>
+              <h3 class="font-medium">Charity Champion</h3>
+              <p class="text-xs text-gray-500">Record 5 charitable acts</p>
+              <div class="achievement-details mt-2 text-xs text-left" style="display: none;">
+                <p>Complete 5 charitable acts to unlock this achievement. Charity (Sadaqah) is a fundamental aspect of Islam that purifies wealth and brings blessings.</p>
+                <p class="mt-1">Progress: 3/5 acts completed</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Settings -->
+        <div class="mb-6">
+          <h3 class="font-semibold mb-4">Settings</h3>
+          <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+            <div class="mb-4 pb-4 border-b border-gray-100">
+              <div class="flex justify-between items-center">
+                <div>
+                  <h4 class="font-medium">Notifications</h4>
+                  <p class="text-sm text-gray-600">Prayer times, community updates</p>
+                </div>
+                <div class="w-12 h-6 bg-primary rounded-full relative">
+                  <div class="w-5 h-5 bg-white rounded-full absolute top-0.5 right-0.5"></div>
+                </div>
+              </div>
+            </div>
+            <div class="mb-4 pb-4 border-b border-gray-100">
+              <div class="flex justify-between items-center">
+                <div>
+                  <h4 class="font-medium">Dark Mode</h4>
+                  <p class="text-sm text-gray-600">Toggle dark theme</p>
+                </div>
+                <div class="dark-mode-toggle">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-between items-center">
+                <div>
+                  <h4 class="font-medium">Prayer Time Calculation</h4>
+                  <p class="text-sm text-gray-600">Method for calculating prayer times</p>
+                </div>
+                <div class="text-sm text-primary">
+                  MWL
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Floating Action Button -->
+  <div class="fab-container fixed right-4 bottom-20 z-50">
+    <button class="fab-main">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+    </button>
+    <div class="fab-actions flex flex-col-reverse gap-2 mb-2 mt-2" style="display: none;">
+      <button class="fab-action-button" data-action="prayer">
+        <div class="fab-action-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        </div>
+        <span class="fab-action-label">Prayer</span>
+      </button>
+      <button class="fab-action-button" data-action="quran">
+        <div class="fab-action-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        </div>
+        <span class="fab-action-label">Quran</span>
+      </button>
+      <button class="fab-action-button" data-action="fasting">
+        <div class="fab-action-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+        </div>
+        <span class="fab-action-label">Fasting</span>
+      </button>
+      <button class="fab-action-button" data-action="workout">
+        <div class="fab-action-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18.6 18.6L12 12l-6.6 6.6"></path><path d="M12 12L5.4 5.4"></path><path d="M12 12l6.6-6.6"></path></svg>
+        </div>
+        <span class="fab-action-label">Workout</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <div class="container">
+      <div class="flex justify-around">
+        <a href="#dashboard" class="bottom-nav-button bottom-nav-button-active" data-page="dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          <span class="text-xs mt-1">Home</span>
+        </a>
+        <a href="#quran" class="bottom-nav-button bottom-nav-button-inactive" data-page="quran">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+          <span class="text-xs mt-1">Quran</span>
+        </a>
+        <a href="#calendar" class="bottom-nav-button bottom-nav-button-inactive" data-page="calendar">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          <span class="text-xs mt-1">Calendar</span>
+        </a>
+        <a href="#community" class="bottom-nav-button bottom-nav-button-inactive" data-page="community">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <span class="text-xs mt-1">Community</span>
+        </a>
+        <a href="#profile" class="bottom-nav-button bottom-nav-button-inactive" data-page="profile">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <span class="text-xs mt-1">Profile</span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <script src="script.js"></script>
+</body>
+</html>
