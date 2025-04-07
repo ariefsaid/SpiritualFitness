@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SpiritualFitness Mobile UI Improvements</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f8fafc;
+      color: #1e293b;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Poppins', sans-serif;
+    }
+    
+    .islamic-pattern {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Crect width='56' height='100' fill='%23f8f9fa'%3E%3C/rect%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23e2e8f0' stroke-width='2'%3E%3C/path%3E%3Cpath d='M28 0L28 34L0 50L0 84L28 100L56 84L56 50L28 34' fill='none' stroke='%23e2e8f0' stroke-width='2'%3E%3C/path%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 56px 100px;
+      opacity: 0.1;
+    }
+    
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      background-color: white;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+      border-top: 1px solid #e2e8f0;
+      padding: 0.75rem 0;
+    }
+    
+    .bottom-nav-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 0.25rem 0.75rem;
+      position: relative;
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .bottom-nav-button-active {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+    
+    .bottom-nav-button-active::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0.375rem;
+      height: 0.375rem;
+      background-color: #3b82f6;
+      border-radius: 9999px;
+    }
+    
+    .bottom-nav-button-inactive {
+      color: #64748b;
+    }
+    
+    .has-bottom-nav {
+      padding-bottom: 5rem;
+    }
+    
+    .fab-main {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 9999px;
+      background-color: #3b82f6;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    
+    .fab-main:active {
+      transform: scale(0.95);
+    }
+    
+    .fab-main-active {
+      background-color: #ef4444;
+    }
+    
+    .fab-action-button {
+      height: 2.5rem;
+      border-radius: 9999px;
+      background-color: white;
+      color: #1e293b;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      padding-left: 0.75rem;
+      padding-right: 1rem;
+      transition: transform 0.2s;
+    }
+    
+    .fab-action-button:active {
+      transform: scale(0.95);
+    }
+    
+    .fab-action-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 9999px;
+      background-color: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.5rem;
+    }
+    
+    .fab-action-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .workout-card {
+      background-color: #f8fafc;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease-in-out;
+      min-height: 180px;
+    }
+    
+    .workout-card-active {
+      background-color: rgba(59, 130, 246, 0.05);
+      border-left: 4px solid #3b82f6;
+    }
+    
+    .workout-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.75rem;
+      color: #334155;
+      font-weight: 500;
+    }
+    
+    .workout-card-header svg {
+      margin-right: 0.5rem;
+    }
+    
+    .workout-card-progress {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .circular-progress {
+      position: relative;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 9999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: conic-gradient(
+        #3b82f6 calc(var(--value) * 1%),
+        #e2e8f0 0
+      );
+    }
+    
+    .circular-progress::before {
+      content: '';
+      position: absolute;
+      width: 4rem;
+      height: 4rem;
+      background-color: white;
+      border-radius: 9999px;
+    }
+    
+    .circular-progress-inner {
+      position: relative;
+      z-index: 10;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    .workout-card-footer {
+      margin-top: 0.75rem;
+      font-size: 0.75rem;
+      color: #64748b;
+      font-weight: 500;
+    }
+    
+    .workout-complete {
+      color: #3b82f6;
+    }
+    
+    .workout-remaining {
+      color: #64748b;
+    }
+    
+    .prayer-card {
+      background-color: white;
+      border-radius: 0.5rem;
+      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      padding: 1rem;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .prayer-time {
+      font-size: 0.875rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 9999px;
+    }
+    
+    .prayer-time-upcoming {
+      background-color: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+    
+    .prayer-time-active {
+      background-color: rgba(245, 158, 11, 0.1);
+      color: #f59e0b;
+    }
+    
+    .prayer-time-completed {
+      background-color: #f1f5f9;
+      color: #64748b;
+    }
+    
+    .prayer-action-button {
+      border-radius: 9999px;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .prayer-action-primary {
+      background-color: #3b82f6;
+      color: white;
+    }
+    
+    .prayer-action-secondary {
+      background-color: #f1f5f9;
+      color: #64748b;
+    }
+    
+    .slide-in-right {
+      animation: slideInRight 0.3s forwards;
+    }
+    
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+    
+    .slide-in-left {
+      animation: slideInLeft 0.3s forwards;
+    }
+    
+    @keyframes slideInLeft {
+      from {
+        transform: translateX(-100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="flex flex-col min-h-screen relative">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 py-4">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
+        <h1 class="text-xl font-semibold text-gray-900">SpiritualFitness</h1>
+        <button class="p-2 rounded-full bg-gray-100">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+          </svg>
+        </button>
+      </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="flex-grow relative has-bottom-nav">
+      <div class="islamic-pattern absolute inset-0 pointer-events-none"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
+        <!-- Today's Spiritual Workout -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-6 border border-gray-200">
+          <div class="flex justify-between items-center mb-4">
+            <h3 class="font-semibold text-lg">Today's Spiritual Workout</h3>
+            <span class="text-sm text-gray-500">Monday, July 4</span>
+          </div>
+          
+          <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm font-medium">Overall Progress</span>
+              <span class="text-sm font-medium">66%</span>
+            </div>
+            <div class="w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+              <div class="h-full bg-blue-500 rounded-full transition-all duration-500 ease-out" style="width: 66%"></div>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <!-- Prayer Workout -->
+            <div class="workout-card workout-card-active">
+              <div class="workout-card-header">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2L2 7V9L12 14L22 9V7L12 2Z" fill="currentColor" />
+                  <path d="M5 10.5V15.5L12 19.5L19 15.5V10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M12 14V19.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Prayer</span>
+              </div>
+              <div class="workout-card-progress">
+                <div class="circular-progress" style="--value: 60">
+                  <div class="circular-progress-inner">
+                    <span>3/5</span>
+                  </div>
+                </div>
+              </div>
+              <div class="workout-card-footer">
+                <span class="workout-remaining">2 remaining</span>
+              </div>
+            </div>
+            
+            <!-- Fasting Workout -->
+            <div class="workout-card workout-card-active">
+              <div class="workout-card-header">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 5.5C10.8954 5.5 10 6.39543 10 7.5C10 8.60457 9.10457 9.5 8 9.5M12 5.5C13.1046 5.5 14 6.39543 14 7.5C14 8.60457 14.8954 9.5 16 9.5M12 5.5L12 14M12 14C10.8954 14 10 14.8954 10 16M12 14C13.1046 14 14 14.8954 14 16M8 19H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Fasting</span>
+              </div>
+              <div class="workout-card-progress">
+                <div class="circular-progress" style="--value: 100">
+                  <div class="circular-progress-inner">
+                    <span>1/1</span>
+                  </div>
+                </div>
+              </div>
+              <div class="workout-card-footer">
+                <span class="workout-complete">Fasting today!</span>
+              </div>
+            </div>
+            
+            <!-- Quran Workout -->
+            <div class="workout-card">
+              <div class="workout-card-header">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 6.25278V19.2528M12 6.25278C10.8321 5.47686 9.24649 5 7.5 5C5.75351 5 4.16789 5.47686 3 6.25278V19.2528C4.16789 18.4769 5.75351 18 7.5 18C9.24649 18 10.8321 18.4769 12 19.2528M12 6.25278C13.1679 5.47686 14.7535 5 16.5 5C18.2465 5 19.8321 5.47686 21 6.25278V19.2528C19.8321 18.4769 18.2465 18 16.5 18C14.7535 18 13.1679 18.4769 12 19.2528" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span>Quran</span>
+              </div>
+              <div class="workout-card-progress">
+                <div class="circular-progress" style="--value: 0">
+                  <div class="circular-progress-inner">
+                    <span>0/1</span>
+                  </div>
+                </div>
+              </div>
+              <div class="workout-card-footer">
+                <div class="flex items-center">
+                  <svg class="h-4 w-4 mr-1 text-amber-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  <span>5 day streak</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Daily Overview -->
+        <div class="mb-8">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-semibold">Daily Overview</h2>
+            <div class="flex items-center bg-white rounded-full px-4 py-2 shadow-sm">
+              <button class="text-gray-400 hover:text-gray-500 mr-2">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <span class="font-medium">July 4, 2025</span>
+              <button class="text-gray-400 hover:text-gray-500 ml-2">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Prayer Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="prayer-card">
+              <div class="flex justify-between items-center mb-3">
+                <span class="font-medium">Fajr</span>
+                <span class="prayer-time prayer-time-completed">4:30 AM</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-500">Dawn Prayer</span>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Completed</span>
+              </div>
+              <div class="mt-auto pt-3 border-t border-gray-100 flex space-x-2">
+                <button class="prayer-action-button prayer-action-secondary">
+                  <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Completed
+                </button>
+              </div>
+            </div>
+            
+            <div class="prayer-card">
+              <div class="flex justify-between items-center mb-3">
+                <span class="font-medium">Dhuhr</span>
+                <span class="prayer-time prayer-time-completed">12:30 PM</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-500">Noon Prayer</span>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Completed</span>
+              </div>
+              <div class="mt-auto pt-3 border-t border-gray-100 flex space-x-2">
+                <button class="prayer-action-button prayer-action-secondary">
+                  <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Completed
+                </button>
+              </div>
+            </div>
+            
+            <div class="prayer-card">
+              <div class="flex justify-between items-center mb-3">
+                <span class="font-medium">Asr</span>
+                <span class="prayer-time prayer-time-completed">3:45 PM</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-500">Afternoon Prayer</span>
+                <span class="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">Completed</span>
+              </div>
+              <div class="mt-auto pt-3 border-t border-gray-100 flex space-x-2">
+                <button class="prayer-action-button prayer-action-secondary">
+                  <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 8V12L15 15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Completed
+                </button>
+              </div>
+            </div>
+            
+            <div class="prayer-card">
+              <div class="flex justify-between items-center mb-3">
+                <span class="font-medium">Maghrib</span>
+                <span class="prayer-time prayer-time-active">7:15 PM</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-500">Sunset Prayer</span>
+                <span class="text-xs bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full">Now</span>
+              </div>
+              <div class="mt-auto pt-3 border-t border-gray-100 flex space-x-2">
+                <button class="prayer-action-button prayer-action-primary">
+                  <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 13L9 17L19 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Mark as Prayed
+                </button>
+              </div>
+            </div>
+            
+            <div class="prayer-card">
+              <div class="flex justify-between items-center mb-3">
+                <span class="font-medium">Isha</span>
+                <span class="prayer-time prayer-time-upcoming">8:45 PM</span>
+              </div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="text-sm text-gray-500">Night Prayer</span>
+                <span class="text-xs bg-gray-100 text-gray-800 px-2 py-0.5 rounded-full">Upcoming</span>
+              </div>
+              <div class="mt-auto pt-3 border-t border-gray-100 flex space-x-2">
+                <button class="prayer-action-button prayer-action-secondary">
+                  <svg class="h-4 w-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 17H20L18.5951 15.5951C18.2141 15.2141 18 14.6973 18 14.1585V11C18 8.38757 16.3304 6.16509 14 5.34142V5C14 3.89543 13.1046 3 12 3C10.8954 3 10 3.89543 10 5V5.34142C7.66962 6.16509 6 8.38757 6 11V14.1585C6 14.6973 5.78595 15.2141 5.40493 15.5951L4 17H9M15 17V18C15 19.6569 13.6569 21 12 21C10.3431 21 9 19.6569 9 18V17M15 17H9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                  Remind Me
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    
+    <!-- Floating Action Button -->
+    <div class="fixed right-4 bottom-20 z-50 flex flex-col-reverse items-end space-y-reverse space-y-2 md:hidden">
+      <div class="flex flex-col-reverse space-y-2 space-y-reverse">
+        <button class="fab-action-button">
+          <span class="fab-action-label">Track Prayer</span>
+          <div class="fab-action-icon">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2L2 7V9L12 14L22 9V7L12 2Z" fill="currentColor" />
+              <path d="M5 10.5V15.5L12 19.5L19 15.5V10.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12 14V19.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+        </button>
+        
+        <button class="fab-action-button">
+          <span class="fab-action-label">Track Fasting</span>
+          <div class="fab-action-icon">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 5.5C10.8954 5.5 10 6.39543 10 7.5C10 8.60457 9.10457 9.5 8 9.5M12 5.5C13.1046 5.5 14 6.39543 14 7.5C14 8.60457 14.8954 9.5 16 9.5M12 5.5L12 14M12 14C10.8954 14 10 14.8954 10 16M12 14C13.1046 14 14 14.8954 14 16M8 19H16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </button>
+        
+        <button class="fab-action-button">
+          <span class="fab-action-label">Read Quran</span>
+          <div class="fab-action-icon">
+            <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 6.25278V19.2528M12 6.25278C10.8321 5.47686 9.24649 5 7.5 5C5.75351 5 4.16789 5.47686 3 6.25278V19.2528C4.16789 18.4769 5.75351 18 7.5 18C9.24649 18 10.8321 18.4769 12 19.2528M12 6.25278C13.1679 5.47686 14.7535 5 16.5 5C18.2465 5 19.8321 5.47686 21 6.25278V19.2528C19.8321 18.4769 18.2465 18 16.5 18C14.7535 18 13.1679 18.4769 12 19.2528" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </button>
+      </div>
+      
+      <button class="fab-main">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+      <div class="flex justify-around">
+        <a href="#" class="bottom-nav-button bottom-nav-button-active">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12L5 10M5 10L12 3L19 10M5 10V20C5 20.5523 5.44772 21 6 21H9M19 10L21 12M19 10V20C19 20.5523 18.5523 21 18 21H15M9 21C9.55228 21 10 20.5523 10 20V16C10 15.4477 10.4477 15 11 15H13C13.5523 15 14 15.4477 14 16V20C14 20.5523 14.4477 21 15 21M9 21H15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-xs mt-1 font-medium">Home</span>
+        </a>
+        
+        <a href="#" class="bottom-nav-button bottom-nav-button-inactive">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 6.25278V19.2528M12 6.25278C10.8321 5.47686 9.24649 5 7.5 5C5.75351 5 4.16789 5.47686 3 6.25278V19.2528C4.16789 18.4769 5.75351 18 7.5 18C9.24649 18 10.8321 18.4769 12 19.2528M12 6.25278C13.1679 5.47686 14.7535 5 16.5 5C18.2465 5 19.8321 5.47686 21 6.25278V19.2528C19.8321 18.4769 18.2465 18 16.5 18C14.7535 18 13.1679 18.4769 12 19.2528" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-xs mt-1">Quran</span>
+        </a>
+        
+        <a href="#" class="bottom-nav-button bottom-nav-button-inactive">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-xs mt-1">Calendar</span>
+        </a>
+        
+        <a href="#" class="bottom-nav-button bottom-nav-button-inactive">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M17 20H22V18C22 16.3431 20.6569 15 19 15C18.0444 15 17.1931 15.4468 16.6438 16.1429M17 20H7M17 20V18C17 17.3438 16.8736 16.717 16.6438 16.1429M16.6438 16.1429C15.6229 14.5234 13.9187 13.4999 12 13.4999C10.0813 13.4999 8.37708 14.5234 7.35617 16.1429M7 20V18C7 17.3438 7.12642 16.717 7.35617 16.1429M7 20H2V18C2 16.3431 3.34315 15 5 15C5.95561 15 6.80686 15.4468 7.35617 16.1429M15 7C15 8.65685 13.6569 10 12 10C10.3431 10 9 8.65685 9 7C9 5.34315 10.3431 4 12 4C13.6569 4 15 5.34315 15 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-xs mt-1">Community</span>
+        </a>
+        
+        <a href="#" class="bottom-nav-button bottom-nav-button-inactive">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 7C16 9.20914 14.2091 11 12 11C9.79086 11 8 9.20914 8 7C8 4.79086 9.79086 3 12 3C14.2091 3 16 4.79086 16 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M12 14C8.13401 14 5 17.134 5 21H19C19 17.134 15.866 14 12 14Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-xs mt-1">Profile</span>
+        </a>
+      </div>
+    </nav>
+  </div>
+  
+  <script>
+    // Add a simple toggle for the FAB menu
+    document.querySelector('.fab-main').addEventListener('click', function() {
+      this.classList.toggle('fab-main-active');
+      const actionButtons = document.querySelector('.flex-col-reverse');
+      actionButtons.style.display = actionButtons.style.display === 'none' ? 'flex' : 'none';
+    });
+    
+    // Initially hide the action buttons
+    document.querySelector('.flex-col-reverse').style.display = 'none';
+  </script>
+</body>
+</html>

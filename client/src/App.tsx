@@ -17,6 +17,7 @@ import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import PwaInstallPrompt from "@/components/PwaInstallPrompt";
+import FloatingActionButton from "@/components/FloatingActionButton";
 import { useOffline } from "./hooks/use-offline";
 import { usePwaInstall } from "./hooks/use-pwa-install";
 
@@ -68,13 +69,14 @@ function App() {
         
         <Header darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
         
-        <main className="flex-grow relative">
+        <main className="flex-grow relative has-bottom-nav md:pb-0">
           <div className="islamic-pattern absolute inset-0 pointer-events-none"></div>
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
             <Router />
           </div>
         </main>
         
+        <FloatingActionButton />
         <BottomNav />
         
         {shouldShowInstallPrompt && (

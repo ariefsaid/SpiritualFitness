@@ -6,6 +6,7 @@ import FastingTracker from "@/components/FastingTracker";
 import QuranProgress from "@/components/QuranProgress";
 import Achievements from "@/components/Achievements";
 import CommunitySection from "@/components/CommunitySection";
+import TodaysWorkout from "@/components/TodaysWorkout";
 import { format } from "date-fns";
 import { usePrayerTimes } from "@/hooks/use-prayer-times";
 import { queryClient } from "@/lib/queryClient";
@@ -105,6 +106,8 @@ export default function Dashboard() {
   return (
     <>
       <DashboardTabs />
+      
+      <TodaysWorkout />
       
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">

@@ -117,15 +117,48 @@
   }
 
   .bottom-nav-button {
-    @apply flex flex-col items-center py-1 px-3;
+    @apply flex flex-col items-center justify-center py-1 px-3 relative transition-all duration-200 ease-in-out;
   }
 
   .bottom-nav-button-active {
-    @apply text-primary;
+    @apply text-primary font-medium;
+  }
+
+  .bottom-nav-button-active::after {
+    content: '';
+    @apply absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 bg-primary rounded-full;
   }
 
   .bottom-nav-button-inactive {
-    @apply text-slate-500;
+    @apply text-slate-500 hover:text-slate-700 dark:hover:text-slate-300;
+  }
+  
+  /* Add padding to the bottom of the main content to account for fixed nav */
+  .has-bottom-nav {
+    @apply pb-20;
+  }
+  
+  /* Page transitions */
+  .page-transition-enter {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  
+  .page-transition-enter-active {
+    opacity: 1;
+    transform: translateX(0);
+    transition: opacity 300ms, transform 300ms;
+  }
+  
+  .page-transition-exit {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  
+  .page-transition-exit-active {
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 300ms, transform 300ms;
   }
 }
 
@@ -142,4 +175,172 @@
 
 .animate-fadeInUp {
   animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+
+.slide-in-right {
+  animation: slideInRight 0.3s forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.3s forwards;
+}
+
+.slide-out-right {
+  animation: slideOutRight 0.3s forwards;
+}
+
+.slide-out-left {
+  animation: slideOutLeft 0.3s forwards;
+}
+
+/* Add a subtle ripple effect for touch interactions */
+.touch-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.touch-ripple::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, #fff 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  transform: scale(10, 10);
+  opacity: 0;
+  transition: transform 0.5s, opacity 0.5s;
+}
+
+.touch-ripple:active::after {
+  transform: scale(0, 0);
+  opacity: 0.3;
+  transition: 0s;
+}
+
+/* Floating Action Button styles */
+.fab-main {
+  @apply w-14 h-14 rounded-full bg-primary text-white flex items-center justify-center shadow-lg;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.fab-main:active {
+  transform: scale(0.95);
+}
+
+.fab-main-active {
+  @apply bg-red-500;
+}
+
+.fab-action-button {
+  @apply h-10 rounded-full bg-white dark:bg-slate-800 text-slate-800 dark:text-white shadow-md flex items-center pl-3 pr-4;
+  transition: transform 0.2s;
+}
+
+.fab-action-button:active {
+  transform: scale(0.95);
+}
+
+.fab-action-icon {
+  @apply w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-2;
+}
+
+.fab-action-label {
+  @apply text-sm font-medium;
+}
+
+/* Workout card styles */
+.workout-card {
+  @apply bg-slate-50 dark:bg-slate-700 rounded-lg p-4 flex flex-col items-center transition-all duration-300 ease-in-out;
+  min-height: 180px;
+}
+
+.workout-card-active {
+  @apply bg-primary/5 dark:bg-primary/10 border-l-4 border-primary;
+}
+
+.workout-card-header {
+  @apply flex items-center justify-center space-x-2 mb-3 text-slate-700 dark:text-slate-200 font-medium;
+}
+
+.workout-card-progress {
+  @apply flex-grow flex items-center justify-center;
+}
+
+.workout-card-footer {
+  @apply mt-3 text-xs text-slate-500 dark:text-slate-400 font-medium;
+}
+
+.workout-complete {
+  @apply text-primary;
+}
+
+.workout-remaining {
+  @apply text-slate-500 dark:text-slate-400;
+}
+
+/* Circular progress indicator */
+.circular-progress {
+  @apply relative w-20 h-20 rounded-full flex items-center justify-center;
+  background: conic-gradient(
+    #3b82f6 calc(var(--value) * 1%),
+    #e2e8f0 0
+  );
+}
+
+.circular-progress::before {
+  content: '';
+  @apply absolute w-16 h-16 bg-white dark:bg-slate-800 rounded-full;
+}
+
+.circular-progress-inner {
+  @apply relative z-10 text-sm font-medium;
 }

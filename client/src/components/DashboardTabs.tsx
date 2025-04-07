@@ -42,7 +42,7 @@ export default function DashboardTabs() {
   };
 
   return (
-    <div className="mb-8 border-b border-slate-200 dark:border-slate-700">
+    <div className="mb-8 border-b border-slate-200 dark:border-slate-700 hidden md:block">
       <div className="flex space-x-8 overflow-x-auto">
         {tabs.map((tab) => (
           <Link key={tab.path} href={tab.path}>
