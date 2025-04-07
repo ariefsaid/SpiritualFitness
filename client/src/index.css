@@ -35,7 +35,7 @@
   }
 
   .offline-indicator {
-    @apply bg-red-500/10 border-l-4 border-red-500;
+    @apply bg-red-500/10 border-l-4 border-red-500 p-2 px-4 mb-2;
   }
 }
 
@@ -282,7 +282,14 @@
 
 .fab-action-button {
   @apply h-10 rounded-full bg-white dark:bg-slate-800 text-slate-800 dark:text-white shadow-md flex items-center pl-3 pr-4;
-  transition: transform 0.2s;
+  transition: transform 0.2s, opacity 0.3s;
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.fab-actions.fab-active .fab-action-button {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .fab-action-button:active {
