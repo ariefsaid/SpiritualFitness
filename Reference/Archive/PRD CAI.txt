@@ -1,0 +1,569 @@
+# Product Requirements Document: Muslim Spiritual Practice PWA
+
+## 1. Executive Summary
+
+This document outlines the requirements for a web-based Progressive Web App (PWA) designed to support Muslims in maintaining consistent spiritual practices. The application will provide tools for tracking daily prayers, fasting, and Quran reading in a calendar format, along with a built-in Quran reading interface and accurate prayer time notifications. A personal progress dashboard will display achievements with fitness-app-inspired motivational elements, while community features will enable group accountability and support.
+
+The app aims to create a "spiritual fitness" experience that encourages consistency in religious practices while maintaining humility and proper Islamic etiquette. This PRD provides detailed specifications for technical implementation by a solo developer using Replit and AI coding assistants.
+
+## 2. Project Objectives
+
+### 2.1 Primary Goals
+- Create an engaging, accessible PWA for Muslims to track and maintain daily spiritual practices
+- Provide accurate, reliable prayer times with customizable calculation methods
+- Offer a clean, distraction-free Quran reading experience with offline capabilities
+- Implement thoughtfully designed motivation systems that encourage consistency without fostering pride
+- Build community features for mutual accountability and support
+- Ensure user privacy and ethical data handling, especially regarding location data
+
+### 2.2 Success Metrics
+- User retention: 50%+ users return to the app at least 3 times per week
+- Prayer tracking: 75%+ of active users track at least 3 prayers daily
+- Quran engagement: 40%+ of users read Quran through the app weekly
+- Feature utilization: 30%+ of users engage with community features
+- Privacy satisfaction: 90%+ of users report feeling their data is handled respectfully
+
+## 3. User Personas
+
+### 3.1 Consistent Practitioner
+**Fatima, 28, Marketing Professional**
+- Regularly performs five daily prayers but sometimes misses due to work schedule
+- Wants to increase consistency and track progress
+- Comfortable with technology and uses fitness apps
+- Seeks subtle reminders and motivation without public sharing
+
+### 3.2 Religious Knowledge Seeker
+**Ahmed, 35, Engineer**
+- Regularly reads Quran but wants to be more structured
+- Interested in learning more about proper prayer times
+- Uses technology extensively for productivity
+- Appreciates data-driven insights about personal habits
+
+### 3.3 Community-Oriented User
+**Aisha, 22, University Student**
+- Practices consistently but misses the community aspect of her hometown mosque
+- Wants accountability partners for religious goals
+- Heavy smartphone user who prefers apps over browsers
+- Values privacy but enjoys appropriate social features
+
+### 3.4 Beginner/Returning Practitioner
+**Omar, 40, Healthcare Worker**
+- Seeking to establish/return to regular prayer routine
+- Needs guidance on prayer times and proper practice
+- Variable work schedule makes consistency challenging
+- Appreciates gentle encouragement and simple interfaces
+
+## 4. Feature Requirements
+
+### 4.1 Core Features
+
+#### 4.1.1 Prayer Tracking System
+- **Calendar Interface**
+  - Monthly, weekly, and daily calendar views
+  - Visual indicators for completed prayers (on time, delayed, missed)
+  - Differentiators for prayers completed individually vs. in congregation (jamaah)
+  - Tap/click interface to mark prayers as completed
+  - Optional notes field for each prayer entry
+
+- **Prayer Time Calculator**
+  - Location-based prayer time calculation (manual location entry or device geolocation)
+  - Support for multiple calculation methods (MWL, ISNA, Egypt, Makkah, Karachi, etc.)
+  - Asr calculation options (Standard/Shafi'i vs. Hanafi)
+  - High latitude adjustment methods for regions near poles
+  - Manual adjustment options for users following local mosque schedules
+
+- **Prayer Time Notifications**
+  - Push notifications for upcoming prayers (customizable timing)
+  - Option to enable/disable notifications for specific prayers
+  - Respectful notification language
+  - Deep links from notifications to relevant app section
+
+#### 4.1.2 Quran Reading Interface
+- **Reader Features**
+  - Clean, distraction-free reading interface
+  - Arabic text with optional translations (multiple languages)
+  - Optional transliteration
+  - Verse-by-verse navigation
+  - Surah/Juz selection
+  - Bookmark functionality
+  - Resume from last read position
+  - Night mode / adjustable text size
+  - Offline access to previously viewed content
+
+- **Reading Tracker**
+  - Calendar view showing days when Quran was read
+  - Progress tracking through entire Quran
+  - Page/verse/juz tracking metrics
+  - Optional daily reading goals with gentle reminders
+
+#### 4.1.3 Fasting Tracker
+- **Calendar Interface**
+  - Mark days with completed fasts
+  - Special indicators for Ramadan
+  - Support for optional fasts (Mondays/Thursdays, White Days, etc.)
+  - Notes field for each fast
+
+#### 4.1.4 Progress Dashboard
+- **Visual Statistics**
+  - Prayer completion rate (daily, weekly, monthly)
+  - Jamaah vs. individual prayer ratio
+  - Fasting consistency metrics
+  - Quran reading progress (pages, surahs, juz completed)
+  - Current streaks for different activities
+  
+- **Achievements System**
+  - Milestones for consistent prayers, fasting, and Quran reading
+  - Special achievements for completing Quran, consistent monthly optional fasts, etc.
+  - Personal badges displayed on profile
+  - No public leaderboards to avoid fostering pride
+  
+- **Motivational Elements**
+  - Daily streak counters
+  - Relevant hadith or Quranic verse of the day
+  - Respectful congratulatory messages for achievements
+  - Progress trends visualization
+
+### 4.2 Community Features
+
+#### 4.2.1 Groups
+- **Group Creation & Management**
+  - Create private groups with unique invite codes/links
+  - Join existing groups via codes
+  - Leave groups
+  - Group creator can manage membership
+  - Group size limits (start with max 20 members)
+
+#### 4.2.2 Group Accountability
+- **Shared Goals**
+  - Define group challenges (e.g., "Complete all prayers on time this week")
+  - Track collective progress toward goals
+  - Display discreet indicators of member participation without detailed logs
+  - Group streak tracking
+
+- **Communication**
+  - Simple, focused group feed for encouragement
+  - Optional prayer/fasting/reading intention sharing
+  - Preset encouraging messages to reduce input friction
+  - No direct messaging to maintain focus
+
+### 4.3 Account & Settings
+
+#### 4.3.1 User Profiles
+- **Profile Information**
+  - Username (no real names required)
+  - Optional display name
+  - Optional profile image/avatar
+  - Private statistics dashboard
+  - Badges/achievements display
+  - Current streaks
+
+#### 4.3.2 Settings
+- **App Configuration**
+  - Prayer calculation method selection
+  - Location settings (manual or GPS)
+  - Notification preferences
+  - Theme settings (light/dark mode)
+  - Language selection
+  - Display preferences (24hr vs. 12hr time format)
+  
+- **Privacy Controls**
+  - Granular data sharing options for group features
+  - Data export functionality
+  - Account deletion option
+  - Clear explanation of data usage
+
+#### 4.3.3 Authentication
+- **Account Management**
+  - Email/password authentication
+  - Optional social login options
+  - Password reset functionality
+  - Account deletion process
+  - Anonymous mode option for basic features without account
+
+## 5. Technical Specifications
+
+### 5.1 Platform & Architecture
+
+#### 5.1.1 Progressive Web App Implementation
+- **Frontend Framework**
+  - React with TypeScript for structure and type safety
+  - State management with React Context API or Zustand for simplicity
+  - Tailwind CSS for responsive, utility-first styling
+
+- **PWA Features**
+  - Service Worker for offline functionality (using Workbox)
+  - App manifest for installability
+  - Push notifications for prayer times
+  - Responsive design for all device sizes
+  - App shell architecture for fast loading
+
+#### 5.1.2 Backend & Database
+- **Backend**
+  - PocketBase for simple, efficient backend and authentication
+  - Single-instance deployment compatible with Replit
+  - REST API endpoints for data operations
+
+- **Database**
+  - SQLite embedded database (via PocketBase)
+  - Schema for Users, Prayers, Fasting, QuranProgress, Groups
+  - Efficient queries for dashboard metrics
+
+#### 5.1.3 External APIs & Data Sources
+- **Quran Data**
+  - Primary: Quran.com API (with API key) for rich features
+  - Secondary/Offline: fawazahmed0/quran-api (Unlicense) for static JSON caching
+  - Attributions for all sources clearly displayed
+
+- **Prayer Times**
+  - Online: Al Adhan API for accurate calculations
+  - Offline: Adhan.js (MIT) for client-side calculation when offline
+  - Support for multiple calculation methods
+
+- **Hadith/Motivational Content**
+  - Sunnah.com API (with API key) for authenticated content
+  - Filter for motivational and practical content
+  - Clear attribution of sources
+
+### 5.2 User Interface Requirements
+
+#### 5.2.1 Design Principles
+- Clean, focused interface prioritizing core functionality
+- Mobile-first responsive design with desktop optimization
+- Minimal, respectful aesthetic with subtle Islamic geometric patterns
+- Warm, supportive tone in all messaging
+- Accessibility compliance (WCAG standards)
+
+#### 5.2.2 Navigation Structure
+- Bottom navigation for mobile (home, tracking, Quran, community, profile)
+- Sidebar navigation for desktop
+- Task-based organization of features
+- Quick access to current day's prayers and reading
+
+#### 5.2.3 User Flows
+- **First-time Setup**
+  1. Welcome & explanation
+  2. Location permission request with clear explanation
+  3. Prayer calculation method selection
+  4. Notification permission request
+  5. Optional account creation
+
+- **Daily Prayer Tracking**
+  1. View today's prayer times on home screen
+  2. Receive notification when prayer time approaches
+  3. Mark prayer as completed (options: on time, delayed, jamaah)
+  4. View streak/achievement updates
+
+- **Quran Reading**
+  1. Select Surah/Juz or resume from last position
+  2. Read with preferred display settings
+  3. Mark progress automatically as pages viewed
+  4. Return to last position when reopening
+
+### 5.3 Performance Requirements
+- Initial load time under 3 seconds on average 4G connection
+- Time to interactive under 5 seconds
+- Offline functionality for core features after first load
+- Smooth animations (60fps) for UI transitions
+- Efficient battery usage for background processes
+- Bundle size under 500KB (initial load, without Quran content)
+
+### 5.4 Security & Privacy Requirements
+- HTTPS for all connections
+- JWTs stored in HttpOnly cookies for authentication
+- Input validation on all user inputs
+- No storage of precise location data beyond calculation needs
+- Clear privacy policy explaining all data usage
+- Data minimization principle applied throughout
+- Encryption for sensitive user data
+
+## 6. Development Approach
+
+### 6.1 Tools & Environment
+- **Development Platform**
+  - Replit for development environment
+  - GitHub for version control
+  - Replit Ghostwriter for coding assistance
+
+- **Deployment**
+  - Initial: Replit for development and MVP hosting
+  - Production: Vercel/Netlify for frontend, Fly.io for PocketBase backend
+
+### 6.2 Development Phases
+
+#### Phase 1: Core Infrastructure (Weeks 1-2)
+- Set up development environment & repositories
+- Implement basic PWA structure with app shell
+- Create initial database schema
+- Implement authentication system
+- Build prayer time calculator integration
+
+#### Phase 2: Prayer & Quran Features (Weeks 3-4)
+- Develop prayer tracking system with calendar interface
+- Integrate Quran API for reading interface
+- Implement basic offline functionality
+- Build notification system for prayer times
+- Create initial UI for fasting tracker
+
+#### Phase 3: User Experience & Dashboard (Weeks 5-6)
+- Develop progress dashboard with statistics
+- Implement personal achievement system
+- Create motivational content integration
+- Polish UI/UX across all core features
+- Enhance offline capabilities
+
+#### Phase 4: Community & Polish (Weeks 7-8)
+- Implement group creation and management
+- Build group dashboard and goal tracking
+- Add group activity feed
+- Refine user profiles
+- Comprehensive testing across devices
+
+#### Phase 5: Launch Preparation (Weeks 9-10)
+- Performance optimization
+- Security review
+- Comprehensive testing (particularly prayer time accuracy)
+- Documentation & help resources
+- Beta testing with small user group
+
+### 6.3 Testing Requirements
+- Unit tests for critical functions (prayer time calculation, streak logic)
+- Component tests for UI elements
+- End-to-end tests for critical user flows
+- Manual testing across multiple devices and browsers
+- Focus on testing prayer time accuracy across diverse locations
+- PWA audit (Lighthouse) for compliance and performance
+- Beta testing with diverse user group (different geographic locations)
+
+## 7. Constraints & Considerations
+
+### 7.1 Technical Constraints
+- Solo developer resources and timeline
+- PWA limitations on iOS (notification restrictions prior to iOS 16.4)
+- Offline storage limits in browsers
+- Push notification reliability variations across platforms
+- Battery usage considerations for background processes
+
+### 7.2 Special Considerations
+- **Religious Sensitivity**
+  - Accurate prayer times are non-negotiable
+  - Quran text rendering must be respectful and error-free
+  - Gamification must avoid fostering pride or competition
+  - All content must respect Islamic principles
+
+- **Cultural Adaptation**
+  - Support for multiple languages (at minimum Arabic, English)
+  - Consideration for regional differences in practices
+  - RTL layout support
+  - Respect for different madhabs and calculation methods
+
+- **Privacy Emphasis**
+  - Transparent handling of location data
+  - No tracking or selling of religious practice data
+  - Minimal permissions approach
+  - Anonymous usage option for privacy-conscious users
+
+## 8. Future Expansion Possibilities
+
+While maintaining focus on the MVP, the architecture should allow for potential future features:
+
+- Audio recitation for Quran reading
+- Detailed tafsir (Quranic explanation) integration
+- Advanced Quran memorization tracking
+- Qibla direction indicator
+- Dua (supplication) collection
+- Expanded social features with appropriate boundaries
+- Customizable widgets for device home screens
+- Integration with wearable devices for discreet notifications
+
+## 9. Success Criteria & Evaluation
+
+The application will be considered successful if it:
+
+1. Provides accurate prayer times across various global locations and calculation methods
+2. Offers a clean, efficient Quran reading experience that works offline
+3. Maintains high user retention metrics (50%+ weekly active users)
+4. Creates a motivational but humble environment for spiritual growth
+5. Respects user privacy and handles data ethically
+6. Functions reliably as a PWA across modern browsers and devices
+7. Can be effectively maintained by a solo developer
+
+## 10. Glossary
+
+- **Asr**: The afternoon prayer, one of the five daily prayers
+- **Dua**: Personal supplication or prayer
+- **Fajr, Dhuhr, Asr, Maghrib, Isha**: The five daily prayers in Islam
+- **Jamaah**: Congregational prayer
+- **Juz**: One of 30 divisions of the Quran
+- **Madhab**: School of Islamic jurisprudence
+- **PWA**: Progressive Web App
+- **Quran**: The Islamic holy book
+- **Ramadan**: The month of fasting in the Islamic calendar
+- **Surah**: Chapter of the Quran
+- **Tafsir**: Exegesis or interpretation of the Quran
+
+# Comprehensive User Stories for Muslim Spiritual Practice PWA
+
+Based on the PRD and technical landscape analysis you've provided, I'll develop detailed user stories that capture the functionality and experience from the users' perspective. These stories will align with the personas mentioned in the documents and cover all major features of the application.
+
+## Core Prayer Tracking
+
+### As Fatima (Consistent Practitioner)
+1. **I want to view today's prayer times** so that I know exactly when each prayer is due based on my location.
+2. **I want to receive notifications before prayer times** so that I can prepare for prayer despite my busy work schedule.
+3. **I want to quickly mark prayers as completed** so that I can track my consistency with minimal effort.
+4. **I want to specify if I prayed in congregation (jamaah)** so that I can track this important aspect of my practice.
+5. **I want to see my prayer completion streak** so that I can stay motivated to maintain consistency.
+6. **I want to adjust notification timing preferences** so that reminders fit around my work meetings and commitments.
+
+### As Omar (Beginner/Returning Practitioner)
+1. **I want to learn the correct prayer times for my location** so that I can establish a proper prayer routine.
+2. **I want a simple interface to mark prayers as completed** so that tracking doesn't feel overwhelming as I build my practice.
+3. **I want gentle, encouraging reminders for prayers** so that I'm motivated rather than pressured.
+4. **I want to see which prayers I've been most consistent with** so I can focus on improving where I struggle.
+5. **I want to customize prayer calculation methods** so the times align with my local mosque's schedule.
+6. **I want to add notes to my prayer entries** so I can record thoughts or challenges I faced.
+
+### As Ahmed (Religious Knowledge Seeker)
+1. **I want to understand different prayer calculation methods** so I can make an informed choice about which to follow.
+2. **I want to see statistics about my prayer consistency** so I can analyze patterns in my practice.
+3. **I want to view monthly and weekly prayer completion calendars** so I can identify trends over time.
+4. **I want to export my prayer data** so I can perform my own analysis or track long-term progress.
+
+## Quran Reading Interface
+
+### As Ahmed (Religious Knowledge Seeker)
+1. **I want to access the Quran with multiple translations** so I can deepen my understanding of the text.
+2. **I want to bookmark verses I'm studying** so I can easily return to them later.
+3. **I want to track my progress through the entire Quran** so I can establish a consistent reading habit.
+4. **I want to see which surahs and juz I've completed** so I can ensure comprehensive coverage.
+5. **I want to set and track daily reading goals** so I can maintain consistency.
+6. **I want to access the Quran offline** so I can read without internet access.
+
+### As Omar (Beginner/Returning Practitioner)
+1. **I want a clean, distraction-free reading interface** so I can focus on the text without overwhelming elements.
+2. **I want to adjust text size and enable night mode** so reading is comfortable regardless of lighting conditions.
+3. **I want to see transliteration alongside Arabic text** so I can practice reading correctly.
+4. **I want to resume from where I last left off** so I don't lose my place between sessions.
+
+### As Fatima (Consistent Practitioner)
+1. **I want to quickly navigate to specific surahs and verses** so I can reference particular sections efficiently.
+2. **I want to see my daily and weekly reading streaks** so I stay motivated to read consistently.
+3. **I want to view a calendar showing days I read Quran** so I can track my consistency visually.
+
+## Fasting Tracker
+
+### As Ahmed (Religious Knowledge Seeker)
+1. **I want to track both obligatory and optional fasts** so I can maintain a comprehensive record of my practice.
+2. **I want to see statistics about my fasting consistency** so I can analyze my patterns.
+3. **I want special indicators for Ramadan fasting** so I can distinguish it from optional fasts.
+
+### As Fatima (Consistent Practitioner)
+1. **I want to mark days when I complete fasts** so I can track my consistency.
+2. **I want to add notes to fasting days** so I can record my experience or intentions.
+3. **I want to track specific optional fasts like Mondays/Thursdays** so I can build this beneficial practice.
+4. **I want to see my fasting history in a calendar view** so I can visualize my consistency.
+
+### As Omar (Beginner/Returning Practitioner)
+1. **I want to learn about recommended optional fasting days** so I can expand my practice beyond Ramadan.
+2. **I want gentle reminders about upcoming recommended fasting days** so I can prepare appropriately.
+
+## Progress Dashboard
+
+### As Fatima (Consistent Practitioner)
+1. **I want to see my current prayer and reading streaks** so I stay motivated to maintain consistency.
+2. **I want to view my prayer completion rate** so I understand my overall consistency.
+3. **I want to see visual statistics of my spiritual practices** so I can quickly gauge my progress.
+
+### As Ahmed (Religious Knowledge Seeker)
+1. **I want detailed metrics about my Quran reading progress** so I can track pages, surahs, and juz completed.
+2. **I want to see trends in my practice over time** so I can identify patterns and make improvements.
+3. **I want to track my ratio of prayers performed in congregation vs. individually** so I can work on increasing communal worship.
+
+### As Omar (Beginner/Returning Practitioner)
+1. **I want to see simple, encouraging feedback on my progress** so I feel motivated rather than overwhelmed.
+2. **I want to view relevant hadith or Quranic verses related to consistency** so I'm spiritually motivated.
+3. **I want to see personalized suggestions for improvement** based on my practice patterns.
+
+## Achievements System
+
+### As Fatima (Consistent Practitioner)
+1. **I want to earn badges for maintaining prayer streaks** so I have tangible recognition of consistency.
+2. **I want to receive milestone achievements** for completing significant portions of the Quran.
+3. **I want respectful congratulatory messages** that acknowledge achievements without fostering pride.
+
+### As Omar (Beginner/Returning Practitioner)
+1. **I want to earn achievable initial badges** so I feel encouraged as I begin my journey.
+2. **I want to see clear next steps for progression** so I know what to work toward.
+
+### As Ahmed (Religious Knowledge Seeker)
+1. **I want to track comprehensive achievements** related to Quran completion and consistent practice.
+2. **I want achievements to be private to my profile** rather than publicly ranked.
+
+## Community Features
+
+### As Aisha (Community-Oriented User)
+1. **I want to create private groups with friends** so we can support each other's spiritual practices.
+2. **I want to share group invite codes/links** so I can easily add trusted friends.
+3. **I want to set group challenges** such as "complete all prayers on time this week" to foster mutual accountability.
+4. **I want to see our collective progress toward goals** without exposing individual detailed logs.
+5. **I want to send encouragement to group members** through simple, focused messages.
+6. **I want to indicate my intention to pray/fast/read** so group members know I'm committed.
+
+### As Fatima (Consistent Practitioner)
+1. **I want to join accountability groups** that respect my privacy preferences.
+2. **I want to see group statistics and streaks** to feel part of a community effort.
+3. **I want control over what aspects of my practice are visible to my group** to maintain appropriate privacy.
+
+### As Omar (Beginner/Returning Practitioner)
+1. **I want to join groups with more experienced practitioners** so I can learn from their consistency.
+2. **I want to receive encouraging messages from group members** to help me stay motivated.
+
+## Account & Settings
+
+### As Ahmed (Religious Knowledge Seeker)
+1. **I want to select my preferred prayer calculation method** from multiple options (MWL, ISNA, Egypt, Makkah, etc.).
+2. **I want to specify my Asr calculation preference** (Standard/Shafi'i vs. Hanafi).
+3. **I want to configure high latitude adjustment methods** since I live in a northern region.
+
+### As Fatima (Consistent Practitioner)
+1. **I want to control notification settings for each prayer** so they fit my schedule.
+2. **I want to choose between dark and light themes** for comfortable use at different times.
+3. **I want to manage my account profile information** while maintaining privacy.
+4. **I want to set my preferred language** for the application interface.
+
+### As Aisha (Community-Oriented User)
+1. **I want granular privacy controls for group features** so I can decide exactly what to share.
+2. **I want to manage group memberships** so I can join or leave groups as needed.
+3. **I want to customize my username and optional profile image** for group interactions.
+
+### As Omar (Beginner/Returning Practitioner)
+1. **I want to manually input my location** instead of using GPS to preserve battery and privacy.
+2. **I want to easily understand what data the app collects** and how it's used.
+3. **I want the option to use the app without creating an account** for basic features.
+
+## PWA Features
+
+### As Fatima (Consistent Practitioner)
+1. **I want to install the app on my phone's home screen** for quick access without opening a browser.
+2. **I want to receive timely push notifications** for prayer times even when the app is closed.
+3. **I want the app to work offline** so I can track prayers and read Quran without internet.
+
+### As Aisha (University Student)
+1. **I want the app to load quickly** even on campus WiFi to check prayer times between classes.
+2. **I want a responsive design** that works well on both my phone and laptop.
+3. **I want to synchronize my data across devices** so my tracking is consistent everywhere.
+
+### As Omar (Healthcare Worker)
+1. **I want to access prayer times and track worship** even when working in areas with poor connectivity.
+2. **I want the app to use minimal battery** since I'm often away from chargers during shifts.
+3. **I want to receive notifications that respect do-not-disturb hours** during critical work periods.
+
+## Extended Features
+
+### As Ahmed (Religious Knowledge Seeker)
+1. **I want access to tafsir (Quranic explanation)** to deepen my understanding while reading.
+2. **I want to track my Quran memorization progress** separately from general reading.
+
+### As Aisha (Community-Oriented User)
+1. **I want to share specific achievements or milestones** with my accountability group to celebrate together.
+2. **I want to participate in group challenges** during Ramadan or other significant periods.

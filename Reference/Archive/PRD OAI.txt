@@ -1,0 +1,433 @@
+Product Requirements Document (PRD)
+
+1. Overview
+
+1.1 Purpose
+
+The purpose of this PWA is to support Muslim users globally in maintaining and enhancing their spiritual practices. The application combines traditional religious activities—such as prayer, fasting, and Quran reading—with modern motivational and social features reminiscent of fitness tracking apps. It will deliver a robust, accessible experience on any device (mobile, tablet, desktop) with full offline capabilities and push notifications.
+
+1.2 Vision & Goals
+	•	Vision: To create a supportive digital companion that enhances daily spiritual practice through personalized tracking, encouraging gamification, and community support while ensuring religious sensitivity and user privacy.
+	•	Goals:
+	•	Enable daily tracking of prayers, fasting, and Quran reading in a calendar format.
+	•	Offer a built-in Quran reading interface with multiple translations and offline access.
+	•	Provide accurate, location-based prayer time notifications and offline fallback via Adhan calculation.
+	•	Present a visually appealing progress dashboard with fitness-app-inspired motivational elements.
+	•	Implement a gamified reward system centered on personal progress and spiritual growth (without competitive leaderboards).
+	•	Foster community with social features that allow group goal tracking and accountability.
+	•	Ensure a technical foundation that is efficient for solo development in an environment like Replit with coding assistants (Ghostwriter).
+
+⸻
+
+2. Functional Requirements
+
+2.1 User Account and Authentication
+	•	User Registration & Login:
+	•	Requirements: Enable registration via email/password as well as optional OAuth (Google, Apple).
+	•	Security: Use JWT-based authentication for secure, stateless sessions. Passwords must be hashed (e.g., using bcrypt).
+	•	Privacy: Offer an anonymous/offline mode where personal progress is stored locally if the user opts out of account creation.
+	•	User Profile:
+	•	Fields: email, display name, location settings (for prayer time calc), preferred translation(s) for Quran reading, and notification preferences.
+	•	Ability to view and update personal progress data such as prayer logs, fasting records, Quran reading position, badges, and achievement history.
+
+2.2 Core Tracking Features
+	•	Prayer Tracker:
+	•	Calendar Interface: A month-view calendar showing daily statuses (e.g., color-coded checkmarks for completion).
+	•	Daily Checklist: List of five daily prayers (Fajr, Dhuhr, Asr, Maghrib, Isha) with tap-to-check functionality.
+	•	Data Sources: Integrate with the Aladhan API for dynamic prayer time retrieval (based on user’s location and chosen calculation method).
+	•	Offline Calculation: Use Adhan.js to calculate prayer times when offline (with customizable method selection).
+	•	Fasting Tracker:
+	•	Calendar-based Logging: Record and display fasting status for special occasions (e.g., Ramadan) and for voluntary fasts.
+	•	Special Considerations: Support automatic handling of non-fasting days (like Eid), with potential reminders integrated into the calendar.
+	•	Quran Reading Tracker and Reader:
+	•	Quran Reader Interface: Display Quran text along with multiple translations and transliterations sourced from trusted Quran APIs (such as Quran.com or Al-Quran Cloud).
+	•	Progress Tracking: Allow users to bookmark their last read position and track completion (e.g., current surah and ayah, memorization progress).
+	•	Offline Access: Cache frequently accessed chapters and verses for offline reading.
+
+2.3 Gamification and Motivational Features
+	•	Streaks and Achievements:
+	•	Streak Counter: Automatically track and display consecutive days where all scheduled prayers or Quran reading targets have been met.
+	•	Badge System: Award badges for milestones (e.g., “7-day prayer streak,” “Completed a Juz of Quran”) with emphasis on personal improvement.
+	•	Points System:
+	•	Non-Competitive Metrics: Assign points per activity (e.g., each prayer marked, Quran pages read) that build on user levels—visible only privately to encourage self-improvement.
+	•	Challenges:
+	•	Individual and Group Challenges: Offer pre-set and customizable challenges such as “Complete a full week of prayer on time” or “Group Quran reading challenge.”
+	•	Encouragement over Competition: Design challenge notifications and progress displays to foster internal progress without highlighting global rankings.
+
+2.4 Notification and Reminder System
+	•	Prayer Time Notifications:
+	•	Push Service: Implement web push notifications (utilizing Firebase Cloud Messaging or Web Push API with service workers) so that users are reminded when a prayer is due.
+	•	Local Scheduling: In tandem with server push, implement client-side reminders when the app is active.
+	•	Platform Considerations: Ensure push notifications work on Android and (with PWA added to home screen) on iOS.
+	•	Additional Reminders:
+	•	Daily Quran reading and fasting reminders, as well as motivational messages (including hadith or quotes), triggered at configurable times.
+
+2.5 Social and Community Features
+	•	Group Creation and Management:
+	•	Group Function: Allow users to create private groups with unique invite codes; groups are designed for mutual accountability and sharing progress.
+	•	Member Dashboard: Display group-level information such as collective daily completion status without exposing sensitive details.
+	•	Messaging and Feed:
+	•	In-Group Communication: Integrate a lightweight messaging or status-update feed where members can post daily updates, encouragement, or share tips.
+	•	Privacy Controls: Allow members to opt out of sharing detailed personal metrics if desired.
+
+2.6 Data Integration and External API Use
+	•	Islamic Content APIs:
+	•	Quran text, translations, and transliterations from trusted open sources (with proper attribution).
+	•	Prayer times from Aladhan API including support for multiple calculation methods and regional adjustments.
+	•	Hadith or motivational quotes via dedicated hadith APIs (e.g., Sunnah.com or HadithAPI) for daily inspirational content.
+	•	Data Caching:
+	•	Cache frequently accessed content (e.g., Quran chapters, prayer times for the day) to support offline functionality.
+	•	Respect data licensing: provide proper attribution within the UI (e.g., “Data courtesy of Quran.com and Aladhan.com”).
+
+⸻
+
+3. Non-functional Requirements
+
+3.1 Performance and Scalability
+	•	Speed and Responsiveness:
+	•	The app must load quickly (caching via service workers and code-splitting for large components like Quran reader) with an emphasis on smooth animation and interaction.
+	•	Optimize for low-bandwidth situations via efficient caching strategies.
+	•	Offline Capability:
+	•	Ensure key functionalities—such as prayer tracking, cached Quran verses, and locally computed prayer times—are fully or partially available without connectivity.
+	•	Use IndexedDB for storing user logs and temporary caching of data.
+
+3.2 Security and Privacy
+	•	Data Protection:
+	•	Use HTTPS for all communication and secure storage mechanisms for sensitive data (e.g., JWTs, password hashes).
+	•	Provide users with clear information on how their data (especially location) is used and allow them to opt in or out.
+	•	Authentication:
+	•	Robust account security with token-based authentication and optional two-factor options (if needed later).
+	•	Minimal personal data stored on servers; rely where possible on client-side calculations (e.g., for prayer time determination) to minimize sensitive transfers.
+
+3.3 User Experience
+	•	Intuitive Design:
+	•	Adopt design patterns from popular fitness tracking and habit apps (e.g., progress rings, calendar heatmaps, and minimalistic action checklists).
+	•	Support multilingual UI and plan for right-to-left (RTL) layout (e.g., for Arabic).
+	•	Accessibility:
+	•	Ensure font sizes, contrast ratios, and navigation patterns are accessible on all devices.
+	•	Use semantic HTML and ARIA attributes to support screen readers.
+
+3.4 Adaptability and Extensibility
+	•	Modular Architecture:
+	•	The codebase should be modular and well-documented so that features (like additional trackers or new APIs) can be easily added.
+	•	Maintain clear boundaries between front-end (React-based PWA) and back-end (Node.js/Express) components.
+	•	Future Integrations:
+	•	Allow room for additional external APIs (e.g., if new Islamic content sources become available).
+	•	Provide hooks for third-party services (e.g., additional push notification services or advanced analytics) if requirements change.
+
+⸻
+
+4. Technical Architecture
+
+4.1 Front-end Architecture
+	•	Framework: React (TypeScript) with a tailored PWA configuration (Web App Manifest, Service Worker).
+	•	UI Library: Use Tailwind CSS or Material-UI for component styling.
+	•	Routing & State Management: Use React Router for in-app navigation, and Context API or Redux for state management, particularly for user data and tracking statuses.
+	•	Offline Support: Service Worker (via Workbox) for caching static assets and API responses; IndexedDB for local storage of logs and user progress.
+	•	Push Notifications: Integration with Web Push API / Firebase Cloud Messaging for timed notifications.
+
+4.2 Back-end Architecture
+	•	Platform: Node.js with Express (or Next.js API routes) to serve REST endpoints.
+	•	Database: Start with SQLite (via Prisma ORM) for rapid prototyping, with the option to migrate to PostgreSQL or a BaaS (Firebase/Supabase) for scalability.
+	•	API Gateway: Endpoints for authentication, CRUD operations on user logs (prayers, fasting, Quran reading), group management, and proxy endpoints for Islamic content APIs (to protect API keys and enable caching).
+	•	Notification Service: A server-side scheduler (or Firebase Cloud Functions if integrated) to process and send scheduled push notifications based on user locale and activity data.
+	•	Real-Time Interaction: Optionally include WebSocket/Socket.io for real-time updates in group messaging and community dashboards.
+
+4.3 Data Flow & Security
+	•	Data Flow:
+	•	Front-end: User inputs update local state immediately and push changes to backend via REST API calls.
+	•	Backend: Validates, stores, and processes data; retrieves from external APIs as needed and caches results.
+	•	Synchronization: Offline data stored locally is synced when connectivity resumes.
+	•	Security Considerations:
+	•	Use JWT for authentication; store tokens securely.
+	•	Validate all inputs to guard against injection attacks.
+	•	Ensure API keys for external services remain secured and are not exposed to the client.
+	•	Regularly audit external dependencies and libraries (e.g., Ghostwriter-generated code) for vulnerabilities.
+
+⸻
+
+5. User Interface and Experience
+
+5.1 Branding and Visual Design
+	•	Color Palette: Calming, yet motivating tones with green, neutral, and blue accents. Option for dark mode.
+	•	Typography: Use high-quality Arabic fonts for Quranic text (e.g., Amiri) and a clean sans-serif for UI elements.
+	•	Icons and Imagery: Minimalistic icons representing prayer, Quran, fasting, and group activity; incorporate subtle Islamic geometric patterns where appropriate.
+	•	Mobile-First Design: The UI must be responsive with an emphasis on touch interactions and a clean, navigable layout on smartphones.
+
+5.2 Interaction Design
+	•	Daily Dashboard: Quick view of upcoming prayer notifications, today’s checklist, and progress summaries (e.g., streak counters, badge awards).
+	•	Calendar: Interactive calendar view to review past prayer and fasting data.
+	•	Push Notification UX: Clear and context-relevant notifications that, when tapped, deep-link into the appropriate section of the app.
+	•	Social Interactions: Intuitive group interface where members’ statuses are shared discreetly, with functionality for posting messages and group-based challenges.
+
+⸻
+
+6. Development Roadmap
+
+Phase 0: Setup and Planning (Days 1–3)
+	•	Initialize the project in Replit with a repository and basic folder structure.
+	•	Setup a PWA-ready React project (e.g., using Create React App with service worker enabled).
+	•	Establish a minimal Express backend with a basic authentication endpoint.
+	•	Outline database schema (users, prayer logs, Quran reading progress, groups).
+
+Phase 1: Core Tracking Features (Week 1)
+	•	Develop the prayer tracker interface: daily checklist and calendar view.
+	•	Integrate Aladhan API and implement Adhan.js fallback for offline prayer time calculation.
+	•	Implement basic user authentication and persist prayer logs in SQLite.
+
+Phase 2: Expansion of Core Features (Week 2)
+	•	Build the Quran reading interface:
+	•	Implement Quran text display, translations, bookmarking, and caching for offline use.
+	•	Introduce the fasting tracker with a calendar view specifically for Ramadan and additional voluntary fast logs.
+	•	Integrate basic push notifications for prayer reminders.
+
+Phase 3: Gamification Layer (Week 3)
+	•	Add streak tracking, achievement badges, and a points system.
+	•	Design and integrate visual feedback mechanisms (pop-ups, progress bars).
+	•	Ensure gamification aspects promote personal improvement without external competitiveness.
+
+Phase 4: Social and Community Features (Week 4)
+	•	Implement group creation and management endpoints (group invite code generation, member dashboards).
+	•	Develop an in-group messaging/feed component for accountability and mutual support.
+	•	Test data synchronization and real-time updates using WebSocket if feasible.
+
+Phase 5: Polish, Testing, and Optimization (Week 5)
+	•	Refine UI/UX based on initial user testing; optimize responsiveness and load performance.
+	•	Strengthen security and data synchronization (address edge cases for offline data).
+	•	Complete accessibility audit and optimize for cross-platform PWA deployment (including iOS support).
+
+Phase 6: Launch Preparation and Continuous Improvement (Week 6+)
+	•	Conduct comprehensive QA, including stress tests on notifications and offline capabilities.
+	•	Deploy initial version on Replit; prepare for gradual migration to a production-grade hosting environment.
+	•	Gather user feedback, monitor analytics (if integrated), and plan for iterative feature improvement and localization.
+
+⸻
+
+7. Risks and Mitigations
+	•	Data Privacy Concerns:
+	•	Risk: Misuse of location or personal religious data.
+	•	Mitigation: Limit data collection, perform all location-based computations on the client whenever possible, use clear privacy policies and user consents.
+	•	Notification Reliability:
+	•	Risk: Delayed or missing push notifications.
+	•	Mitigation: Thorough testing across devices and utilizing multiple strategies (server push vs. grouped notifications via FCM).
+	•	Offline Data Synchronization:
+	•	Risk: Data loss or conflict when syncing offline entries.
+	•	Mitigation: Implement robust conflict resolution and local caching mechanisms; use IndexedDB with background synchronization where possible.
+	•	Technical Debt:
+	•	Risk: Rapid prototyping might lead to code that is not fully modular.
+	•	Mitigation: Adopt clear coding standards, modular architecture, and maintain thorough documentation. Use automated tests for core logic.
+
+⸻
+
+8. Summary and Next Steps
+
+This PRD establishes a comprehensive foundation for building a global Muslim spiritual practice PWA. The proposed product emphasizes modern user engagement techniques drawn from fitness apps while maintaining a tone of humility and spiritual sincerity.
+Immediate next steps:
+	1.	Validate the high-level architecture with the development team.
+	2.	Create initial wireframes for the core tracking and dashboard views.
+	3.	Set up the development environment in Replit and initialize version control.
+	4.	Start Phase 0 by drafting technical tasks and assigning milestones.
+
+By aligning the project requirements with current community APIs, a scalable tech stack, and thoughtful UX design, we ensure that the final product not only meets the initial executive vision but is also robust, secure, and positioned for future enhancements.
+
+Below is a comprehensive set of user stories that capture the product’s functionality, user experience, and technical interactions. These stories cover core tracking features, content consumption, notifications, gamification, community, and settings. Each story is written from the end-user’s perspective and includes acceptance criteria and key notes for future refinement.
+
+⸻
+
+1. User Accounts and Profile Management
+
+User Story 1.1 – User Registration & Login
+As a new user, I want to register an account (via email/password and optional social login) so that I can securely store my personal spiritual progress and preferences.
+
+Acceptance Criteria:
+	•	A new user can create an account using their email and a password.
+	•	Optionally, the app supports social logins (e.g., Google or Apple) without compromising privacy.
+	•	A JSON Web Token (JWT) is issued upon successful registration/login and stored securely.
+	•	A user-friendly error message is shown for invalid data or registration failures.
+
+Notes:
+	•	The design allows for an anonymous/offline mode where core features work locally if a user opts not to create an account.
+	•	Future refinements might include two-factor authentication or password recovery flows.
+
+⸻
+
+User Story 1.2 – Profile Management
+As a logged-in user, I want to update my profile (including my display name, location, and preferred calculation method for prayer times) so that my experience is personalized and accurate for my context.
+
+Acceptance Criteria:
+	•	Users can view and edit their profile information.
+	•	Changes (such as updating location or preferred prayer method) are immediately reflected in their app experience (for example, showing local prayer times correctly).
+	•	Updated preferences persist across sessions.
+
+⸻
+
+2. Core Tracking Features
+
+2.1 Prayer Tracking
+
+User Story 2.1 – Viewing Daily Prayer Times
+As a user, I want to see accurate, location-based prayer times (via Aladhan API or local calculation with Adhan.js) so that I know the schedule for my daily prayers.
+
+Acceptance Criteria:
+	•	On opening the app, the home screen displays today’s prayer times (Fajr, Dhuhr, Asr, Maghrib, Isha).
+	•	The times are computed based on the user’s current or set location and chosen calculation method.
+	•	If the user is offline, the app calculates prayer times locally using Adhan.js and shows cached data where available.
+
+⸻
+
+User Story 2.2 – Marking Prayers as Completed
+As a user, I want to mark each prayer as completed (using a tap-to-check interface) so that I can track my daily performance and see progress in the calendar.
+
+Acceptance Criteria:
+	•	Each prayer appears in a daily checklist with an interactive checkbox or toggle.
+	•	When a prayer is marked, visual feedback (e.g., a checkmark animation or a color change) confirms the action.
+	•	The app updates the calendar view and user dashboard to reflect the completion.
+	•	Offline entries are stored locally and synchronized when online.
+
+⸻
+
+2.2 Fasting Tracking
+
+User Story 2.3 – Tracking Daily Fasting
+As a user, I want to record whether I have fasted on a specific day (for Ramadan or voluntary fasts) so that I can review my progress over the month.
+
+Acceptance Criteria:
+	•	A dedicated fasting tracker allows users to mark days as “fasted” or “not fasted” on a calendar view.
+	•	Special non-fasting days (like Eid) can be automatically flagged or manually adjusted.
+	•	The system aggregates fasting data to display monthly or Ramadan-specific summaries.
+
+⸻
+
+2.3 Quran Reading & Progress
+
+User Story 2.4 – In-App Quran Reading
+As a user, I want to read the Quran within the app with access to multiple translations and transliterations so that I can deepen my understanding without switching applications.
+
+Acceptance Criteria:
+	•	The Quran Reader interface displays text with options to switch between available translations.
+	•	Users can scroll, paginate, or jump to specific surahs and ayahs.
+	•	The interface caches recently accessed chapters to enable offline reading.
+	•	A bookmarking feature allows users to mark their last read position, which persists across sessions.
+
+⸻
+
+User Story 2.5 – Quran Reading Progress Tracking
+As a user, I want the app to track my Quran reading progress (including completed sections and memorization) so that I can see my growth and set future reading goals.
+
+Acceptance Criteria:
+	•	Users see their reading progress (e.g., current surah/ayah, percentage completed, or Juz progress) on a dedicated dashboard.
+	•	The system records reading sessions and allows users to set personal goals or track memorization milestones.
+
+⸻
+
+3. Gamification and Motivational Features
+
+User Story 3.1 – Daily Streak and Achievement Tracking
+As a user, I want to see a streak counter and earn badges when I consistently complete my religious tasks (like praying on time and reading the Quran) so that I feel motivated to maintain my daily practice.
+
+Acceptance Criteria:
+	•	The dashboard shows a clear visual indicator of the current streak (e.g., “7-day streak”).
+	•	When users hit milestones (e.g., 7 days, 30 days), a badge or achievement is awarded and visibly added to their profile.
+	•	The gamification logic updates dynamically as the user completes daily tasks.
+
+⸻
+
+User Story 3.2 – Points System and Non-Competitive Rewards
+As a user, I want to accumulate points for every completed activity (such as prayers and Quran reading) that contribute to a level or milestone reward so that I feel encouraged to improve without feeling competitive against others.
+
+Acceptance Criteria:
+	•	Points are assigned for each activity (with configurable weights).
+	•	Points accumulation is visible in the user’s profile and translates into non-competitive rewards (levels or badges).
+	•	The design avoids public leaderboards and emphasizes personal improvement and internal accountability.
+
+⸻
+
+4. Notification and Reminder System
+
+User Story 4.1 – Prayer Time Push Notifications
+As a user, I want to receive timely push notifications before each prayer so that I am reminded to pray even if I have not opened the app.
+
+Acceptance Criteria:
+	•	The system sends push notifications at configured intervals based on calculated prayer times.
+	•	Notifications display relevant information (e.g., “It’s time for Fajr – mark your prayer”) and deep-link into the app.
+	•	Notification settings allow users to opt in/out and adjust timing preferences.
+	•	Test cases include both online and offline scenarios (with cached local data).
+
+⸻
+
+User Story 4.2 – Additional Reminders and Motivational Messages
+As a user, I want to receive regular reminders for Quran reading and fasting, including inspirational quotes or hadith, so that I remain encouraged throughout the day.
+
+Acceptance Criteria:
+	•	Users can set preferences for additional reminders (e.g., morning Quran reading prompt).
+	•	Notifications display motivational content (sourced from approved Islamic content APIs) and link to the relevant sections of the app.
+	•	The frequency and type of notifications are adjustable in the settings.
+
+⸻
+
+5. Social and Community Features
+
+User Story 5.1 – Creating and Managing Groups
+As a user, I want to create a private group and invite friends or family using a unique invite code so that we can collectively track our spiritual practices and support one another.
+
+Acceptance Criteria:
+	•	A “Create Group” feature is available that generates a unique group code or link.
+	•	Users can join groups via the provided code.
+	•	Group membership and details are securely stored and associated with user profiles.
+	•	Group settings include privacy options for data sharing.
+
+⸻
+
+User Story 5.2 – Group Dashboard and Accountability Tracking
+As a group member, I want to view a dashboard showing the collective progress of my group (in a non-intrusive way) so that we can foster a sense of shared accountability without feeling exposed.
+
+Acceptance Criteria:
+	•	A group dashboard displays key metrics (e.g., “X out of Y members completed all prayers today”) without revealing detailed individual performance.
+	•	The group interface updates in near real-time (via polling or WebSockets) when members mark their progress.
+	•	Users can see group challenge progress (if applicable) in addition to personal stats.
+
+⸻
+
+User Story 5.3 – In-Group Messaging and Encouragement
+As a user, I want to send and receive messages or status updates within my group so that we can encourage each other, share tips, and stay connected in our spiritual journey.
+
+Acceptance Criteria:
+	•	A simple, in-app messaging system allows users to post messages to a group feed.
+	•	The messaging interface supports text (and optionally small images or emojis) with basic privacy controls.
+	•	Messages are time-stamped and ordered chronologically with no competitive ranking.
+
+⸻
+
+6. Settings and Customization
+
+User Story 6.1 – Configuring Notification Preferences and Calculation Methods
+As a user, I want to configure my notification preferences and choose the calculation method for prayer times so that the app behaves according to my personal and local requirements.
+
+Acceptance Criteria:
+	•	A settings page allows users to toggle notifications, change time intervals, and select a preferred prayer time calculation method.
+	•	Changes in settings are saved immediately and reflected in real-time (e.g., updated prayer times).
+	•	The app supports multiple languages and, when feasible, right-to-left (RTL) layouts for Arabic.
+
+⸻
+
+User Story 6.2 – Data Privacy and Offline Mode Settings
+As a user concerned about privacy, I want to be able to control which data is stored on the server versus locally and have an offline mode that retains core functionality without needing an active internet connection.
+
+Acceptance Criteria:
+	•	Users can view and manage their data storage preferences, choosing offline modes where possible.
+	•	The app clearly informs users how location and other sensitive data are used.
+	•	Offline functionalities (such as prayer tracking and local calculation using Adhan.js) remain fully operational without network connectivity, with synchronization when the connection is restored.
+
+⸻
+
+7. Dashboard and Progress Overview
+
+User Story 7.1 – Personal Dashboard View
+As a user, I want to see a comprehensive dashboard that aggregates my daily, weekly, and monthly progress (for prayers, fasting, Quran reading, and gamification milestones) so that I can monitor my spiritual journey at a glance.
+
+Acceptance Criteria:
+	•	The dashboard includes a calendar view, progress graphs, streak counters, and a summary of badges earned.
+	•	Data is presented in an intuitive format with clear visual cues (e.g., color-coded days, progress rings).
+	•	The dashboard updates dynamically as new data is recorded (both online and via offline sync).
+
+⸻
