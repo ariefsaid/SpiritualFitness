@@ -27,17 +27,8 @@ const app = next({
   dev, 
   hostname, 
   port,
-  conf: {
-    // Ensure all config matches next.config.mjs
-    reactStrictMode: true,
-    swcMinify: true,
-    experimental: {
-      appDir: true
-    },
-    images: {
-      domains: ['localhost']
-    }
-  }
+  // Next.js 15 no longer needs these inline configurations
+  // All configuration should be in next.config.mjs
 });
 const handle = app.getRequestHandler();
 

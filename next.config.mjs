@@ -31,6 +31,16 @@ const nextConfig = {
       ],
     },
   ],
+  // Next.js 15 settings
+  // Allow cross-origin requests in development (for Replit)
+  devIndicators: {
+    buildActivityPosition: 'bottom-right',
+  },
+  // Configure allowed development origins for Replit
+  allowedDevOrigins: [
+    /\.replit\.dev$/,
+    /\.pike\.replit\.dev$/
+  ],
 };
 
 export default nextConfig;

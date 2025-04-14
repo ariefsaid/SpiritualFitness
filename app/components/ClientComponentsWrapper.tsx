@@ -3,19 +3,16 @@
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 
-// Dynamically import client components with no SSR
+// Dynamically import client components
 const OfflineIndicator = dynamic(() => import('@/components/OfflineIndicator'), { 
-  ssr: false,
   loading: () => null
 });
 
 const Header = dynamic(() => import('@/components/Header'), {
-  ssr: false,
   loading: () => <div className="h-16 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700"></div>
 });
 
 const BottomNav = dynamic(() => import('@/components/BottomNav'), {
-  ssr: false,
   loading: () => null
 });
 
