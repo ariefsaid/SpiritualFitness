@@ -20,7 +20,8 @@ function initializeDb() {
   }
   
   // Create and return drizzle database instance
-  return drizzle(sql, { schema });
+  // Using 'as any' to fix type issues with NeonQueryFunction
+  return drizzle(sql as any, { schema });
 }
 
 // Lazy initialization of database

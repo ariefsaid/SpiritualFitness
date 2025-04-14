@@ -16,9 +16,18 @@ const BottomNav = dynamic(() => import('@/components/BottomNav'), {
   loading: () => null
 });
 
+// Import service worker registration - no SSR needed
+const ServiceWorkerRegistration = dynamic(
+  () => import('@/components/ServiceWorkerRegistration'),
+  { ssr: false }
+);
+
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      {/* Register service worker for PWA capabilities */}
+      <ServiceWorkerRegistration />
+      
       <Suspense fallback={null}>
         <OfflineIndicator />
       </Suspense>

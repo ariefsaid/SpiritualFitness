@@ -50,15 +50,20 @@ export interface IStorage {
   // Community group methods
   createCommunityGroup(group: InsertCommunityGroup): Promise<CommunityGroup>;
   getCommunityGroups(): Promise<CommunityGroup[]>;
+  getCommunityGroupsByType(type: string): Promise<CommunityGroup[]>;
   getCommunityGroupById(id: number): Promise<CommunityGroup | undefined>;
   updateCommunityGroup(id: number, group: Partial<CommunityGroup>): Promise<CommunityGroup | undefined>;
   deleteCommunityGroup(id: number): Promise<boolean>;
+  getGroupMembers(groupId: number): Promise<UserGroupMembership[]>;
+  getGroupAdmins(groupId: number): Promise<UserGroupMembership[]>;
 
   // User group membership methods
-  createUserGroupMembership(membership: InsertUserGroupMembership): Promise<UserGroupMembership>;
-  getUserGroupMembershipsByUserId(userId: number): Promise<UserGroupMembership[]>;
-  getUserGroupMembershipsByGroupId(groupId: number): Promise<UserGroupMembership[]>;
-  deleteUserGroupMembership(id: number): Promise<boolean>;
+  createGroupMembership(membership: InsertUserGroupMembership): Promise<UserGroupMembership>;
+  getUserMemberships(userId: number): Promise<UserGroupMembership[]>;
+  getGroupMembership(userId: number, groupId: number): Promise<UserGroupMembership | undefined>;
+  getMembershipById(id: number): Promise<UserGroupMembership | undefined>;
+  updateMembership(id: number, data: Partial<UserGroupMembership>): Promise<UserGroupMembership | undefined>;
+  deleteMembership(id: number): Promise<boolean>;
 
   // Challenge methods
   createChallenge(challenge: InsertChallenge): Promise<Challenge>;
@@ -314,6 +319,11 @@ export class MemStorage implements IStorage {
   async getCommunityGroups(): Promise<CommunityGroup[]> {
     return Array.from(this.communityGroups.values());
   }
+  
+  async getCommunityGroupsByType(type: string): Promise<CommunityGroup[]> {
+    return Array.from(this.communityGroups.values())
+      .filter(group => group.type.toLowerCase() === type.toLowerCase());
+  }
 
   async getCommunityGroupById(id: number): Promise<CommunityGroup | undefined> {
     return this.communityGroups.get(id);
@@ -332,6 +342,48 @@ export class MemStorage implements IStorage {
 
   async deleteCommunityGroup(id: number): Promise<boolean> {
     return this.communityGroups.delete(id);
+  }
+  
+  async getGroupMembers(groupId: number): Promise<UserGroupMembership[]> {
+    return Array.from(this.userGroupMemberships.values())
+      .filter(membership => membership.groupId === groupId);
+  }
+  
+  async getGroupAdmins(groupId: number): Promise<UserGroupMembership[]> {
+    return Array.from(this.userGroupMemberships.values())
+      .filter(membership => membership.groupId === groupId && membership.role === 'admin');
+  }
+
+  async createGroupMembership(membership: InsertUserGroupMembership): Promise<UserGroupMembership> {
+    return this.createUserGroupMembership(membership);
+  }
+  
+  async getUserMemberships(userId: number): Promise<UserGroupMembership[]> {
+    return this.getUserGroupMembershipsByUserId(userId);
+  }
+  
+  async getGroupMembership(userId: number, groupId: number): Promise<UserGroupMembership | undefined> {
+    return Array.from(this.userGroupMemberships.values())
+      .find(membership => membership.userId === userId && membership.groupId === groupId);
+  }
+  
+  async getMembershipById(id: number): Promise<UserGroupMembership | undefined> {
+    return this.userGroupMemberships.get(id);
+  }
+  
+  async updateMembership(id: number, data: Partial<UserGroupMembership>): Promise<UserGroupMembership | undefined> {
+    const membership = this.userGroupMemberships.get(id);
+    if (!membership) {
+      return undefined;
+    }
+    
+    const updatedMembership = { ...membership, ...data };
+    this.userGroupMemberships.set(id, updatedMembership);
+    return updatedMembership;
+  }
+  
+  async deleteMembership(id: number): Promise<boolean> {
+    return this.deleteUserGroupMembership(id);
   }
 
   async createUserGroupMembership(membership: InsertUserGroupMembership): Promise<UserGroupMembership> {

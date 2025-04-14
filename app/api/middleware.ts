@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+// Using a different approach for cookies to fix type issues
 import { cookies } from 'next/headers';
 import { storage } from '@/lib/storage';
 
@@ -35,19 +36,34 @@ export function errorResponse(message: string, status: number = 500) {
 }
 
 /**
- * Get the current user from cookies
+ * Get the current user from request cookies
+ * @param request Optional NextRequest to get cookies from
  */
-export async function getCurrentUser() {
+export async function getCurrentUser(request?: NextRequest) {
   try {
-    // Get the cookies from the request in a server component
-    const cookieStore = cookies();
-    const userId = cookieStore.get('user_id')?.value;
+    let userId: string | undefined;
+    
+    // Get userId from request cookies if provided, otherwise from server cookies
+    if (request) {
+      // Get from request cookies
+      userId = request.cookies.get('user_id')?.value;
+    } else {
+      // Try to get from server component cookies
+      try {
+        const cookieStore = cookies();
+        // Type assertion to handle TypeScript issues
+        userId = (cookieStore as any).get?.('user_id')?.value;
+      } catch (e) {
+        console.error('Error accessing cookies in server component:', e);
+      }
+    }
     
     if (!userId) {
       return null;
     }
     
-    return await storage.getUser(parseInt(userId));
+    const user = await storage.getUser(parseInt(userId));
+    return user || null;
   } catch (error) {
     console.error('Error getting current user:', error);
     return null;
@@ -58,7 +74,7 @@ export async function getCurrentUser() {
  * Check if the user is authenticated
  */
 export async function isAuthenticated(request: NextRequest) {
-  const user = await getCurrentUser();
+  const user = await getCurrentUser(request);
   return user !== null;
 }
 

@@ -21,9 +21,58 @@ export default function DailyQuote() {
     
     async function fetchQuote() {
       try {
-        // Simulate API call with a fixed response
-        // In production, this would fetch from an actual API endpoint
-        setTimeout(() => {
+        // Fetch from the API
+        const response = await fetch('/api/quotes/random');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch quote');
+        }
+        
+        const data = await response.json();
+        setQuote(data);
+        
+        // Store in localStorage for offline access
+        localStorage.setItem('dailyQuote', JSON.stringify({
+          quote: data,
+          timestamp: new Date().toISOString()
+        }));
+      } catch (error) {
+        console.error('Error fetching quote:', error);
+        
+        // Try to get from localStorage if we're offline
+        try {
+          const cachedData = localStorage.getItem('dailyQuote');
+          if (cachedData) {
+            const { quote: cachedQuote, timestamp } = JSON.parse(cachedData);
+            // Use cached quote if it's from today
+            const cachedDate = new Date(timestamp).toDateString();
+            const today = new Date().toDateString();
+            
+            if (cachedDate === today) {
+              setQuote(cachedQuote);
+            } else {
+              // Fallback quote if cached one is old
+              setQuote({
+                id: 1,
+                text: "The believers in their mutual kindness, compassion and sympathy are just like one body. When one of the limbs suffers, the whole body responds to it with wakefulness and fever.",
+                author: "Prophet Muhammad",
+                source: "Sahih al-Bukhari",
+                category: "compassion"
+              });
+            }
+          } else {
+            // Fallback quote if no cache exists
+            setQuote({
+              id: 1,
+              text: "The believers in their mutual kindness, compassion and sympathy are just like one body. When one of the limbs suffers, the whole body responds to it with wakefulness and fever.",
+              author: "Prophet Muhammad",
+              source: "Sahih al-Bukhari",
+              category: "compassion"
+            });
+          }
+        } catch (localStorageError) {
+          console.error('Error accessing localStorage:', localStorageError);
+          // Ultimate fallback
           setQuote({
             id: 1,
             text: "The believers in their mutual kindness, compassion and sympathy are just like one body. When one of the limbs suffers, the whole body responds to it with wakefulness and fever.",
@@ -31,10 +80,8 @@ export default function DailyQuote() {
             source: "Sahih al-Bukhari",
             category: "compassion"
           });
-          setIsLoading(false);
-        }, 500);
-      } catch (error) {
-        console.error('Error fetching quote:', error);
+        }
+      } finally {
         setIsLoading(false);
       }
     }

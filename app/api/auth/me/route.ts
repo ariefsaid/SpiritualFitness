@@ -10,8 +10,8 @@ export async function GET(request: NextRequest) {
   const logger = logRequest(request, '/api/auth/me');
   
   try {
-    // Get current user from middleware
-    const user = await getCurrentUser();
+    // Get current user from middleware, passing the request
+    const user = await getCurrentUser(request);
     
     if (!user) {
       logger.finish(401);

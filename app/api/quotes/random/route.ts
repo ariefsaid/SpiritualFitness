@@ -1,15 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { storage } from '../../../lib/storage';
-import { logRequest, errorResponse } from '../../middleware';
+import { storage } from '@/lib/storage';
+import { logRequest, errorResponse } from '@/api/middleware';
 
 /**
  * GET /api/quotes/random
- * Returns a random quote
+ * Returns a random inspirational quote
  */
 export async function GET(request: NextRequest) {
   const logger = logRequest(request, '/api/quotes/random');
   
   try {
+    // Get a random quote from storage
     const quote = await storage.getRandomQuote();
     
     if (!quote) {
@@ -18,7 +19,14 @@ export async function GET(request: NextRequest) {
     }
     
     logger.finish(200, quote);
-    return NextResponse.json(quote);
+    
+    // Set cache headers for better performance
+    return NextResponse.json(quote, {
+      headers: {
+        // Cache for 1 day, revalidate every hour
+        'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400'
+      }
+    });
   } catch (err) {
     console.error('Error fetching random quote:', err);
     logger.finish(500);
