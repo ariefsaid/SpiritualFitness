@@ -1,0 +1,10 @@
+export default function Loading() {
+  return (
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <div className="text-center">
+        <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
+        <p className="text-slate-600 dark:text-slate-300">Loading...</p>
+      </div>
+    </div>
+  );
+}
