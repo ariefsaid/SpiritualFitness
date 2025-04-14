@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import { storage } from '@/lib/storage';
 
 /**
  * Log API requests 
@@ -33,16 +35,44 @@ export function errorResponse(message: string, status: number = 500) {
 }
 
 /**
- * Authentication placeholder
- * This will be replaced with actual session-based auth
+ * Get the current user from cookies
  */
 export async function getCurrentUser() {
-  // TODO: Implement proper authentication using Next.js middleware
-  // For now, return a placeholder user
-  return {
-    id: 1,
-    username: 'testuser'
-  };
+  try {
+    // Get the cookies from the request in a server component
+    const cookieStore = cookies();
+    const userId = cookieStore.get('user_id')?.value;
+    
+    if (!userId) {
+      return null;
+    }
+    
+    return await storage.getUser(parseInt(userId));
+  } catch (error) {
+    console.error('Error getting current user:', error);
+    return null;
+  }
+}
+
+/**
+ * Check if the user is authenticated
+ */
+export async function isAuthenticated(request: NextRequest) {
+  const user = await getCurrentUser();
+  return user !== null;
+}
+
+/**
+ * Middleware to ensure authentication
+ */
+export async function requireAuth(request: NextRequest) {
+  const isAuthed = await isAuthenticated(request);
+  
+  if (!isAuthed) {
+    return errorResponse('Unauthorized', 401);
+  }
+  
+  return null;
 }
 
 /**

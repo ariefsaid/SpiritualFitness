@@ -1,9 +1,18 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useOffline } from '@/hooks/use-offline';
 
 export default function OfflineIndicator() {
+  const [isMounted, setIsMounted] = useState(false);
   const isOffline = useOffline();
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // Don't render anything during SSR to avoid hydration mismatch
+  if (!isMounted) return null;
   
   if (!isOffline) return null;
   

@@ -13,8 +13,12 @@ interface Quote {
 export default function DailyQuote() {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   
   useEffect(() => {
+    // Mark as mounted to avoid hydration mismatch
+    setIsMounted(true);
+    
     async function fetchQuote() {
       try {
         // Simulate API call with a fixed response
@@ -38,6 +42,17 @@ export default function DailyQuote() {
     fetchQuote();
   }, []);
   
+  // Don't render anything during server-side rendering to prevent hydration mismatch
+  if (!isMounted) {
+    return (
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-8 border border-slate-200 dark:border-slate-700 animate-pulse">
+        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-4"></div>
+        <div className="h-10 bg-slate-200 dark:bg-slate-700 rounded w-full mb-4"></div>
+        <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-8 border border-slate-200 dark:border-slate-700 animate-pulse">

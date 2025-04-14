@@ -1,10 +1,19 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function BottomNav() {
   const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
+  // Only render the component on the client side to prevent hydration mismatch
+  if (!isMounted) return null;
   
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-40 bg-white dark:bg-slate-900 shadow-lg border-t border-slate-200 dark:border-slate-700 md:hidden">
