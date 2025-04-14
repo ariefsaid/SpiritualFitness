@@ -1,250 +1,180 @@
 'use client';
 
-import { useEffect, useState } from "react";
-import Link from 'next/link';
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { CommunityGroup, Challenge, UserGroupMembership } from "@shared/schema";
-import { differenceInDays } from "date-fns";
+import { useState, useEffect } from 'react';
 
-// This will be replaced by a proper API client function
-const apiRequest = async <T,>(method: string, url: string, data?: any): Promise<T> => {
-  const options: RequestInit = {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credentials: 'include',
-  };
-  
-  if (data) {
-    options.body = JSON.stringify(data);
-  }
-  
-  const response = await fetch(url, options);
-  
-  if (!response.ok) {
-    throw new Error(`API error: ${response.status}`);
-  }
-  
-  return response.json();
-};
+interface CommunityPost {
+  id: number;
+  userId: number;
+  username: string;
+  userAvatar?: string;
+  content: string;
+  likes: number;
+  comments: number;
+  createdAt: string;
+  tags?: string[];
+}
 
 export default function CommunitySection() {
-  const queryClient = useQueryClient();
+  const [posts, setPosts] = useState<CommunityPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
-  const { data: challenges, isLoading: isLoadingChallenges } = useQuery<Challenge[]>({
-    queryKey: ['/api/challenges'],
-    queryFn: async () => {
-      return apiRequest<Challenge[]>('GET', '/api/challenges');
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        // Simulate API call with a fixed response for now
+        setTimeout(() => {
+          setPosts([
+            {
+              id: 1,
+              userId: 2,
+              username: "Ahmad Hassan",
+              userAvatar: "AH",
+              content: "Just completed a 30-day Quran challenge! Alhamdulillah for the opportunity to connect with the words of Allah. Anyone else working on their Quran goals this month?",
+              likes: 24,
+              comments: 8,
+              createdAt: "2025-04-12T09:30:00Z",
+              tags: ["quran", "challenge"]
+            },
+            {
+              id: 2,
+              userId: 3,
+              username: "Fatima Zahra",
+              userAvatar: "FZ",
+              content: "Sisters, anyone joining the virtual Tafsir class this weekend? We'll be discussing Surah Al-Kahf and its lessons for our daily lives. Let me know if you're interested!",
+              likes: 15,
+              comments: 6,
+              createdAt: "2025-04-13T14:15:00Z",
+              tags: ["tafsir", "learning"]
+            },
+            {
+              id: 3,
+              userId: 4,
+              username: "Yusuf Ali",
+              userAvatar: "YA",
+              content: "Started using this app a month ago and my prayer consistency has improved so much! The reminders and tracking really help keep me accountable. JazakAllah khair to the developers!",
+              likes: 31,
+              comments: 4,
+              createdAt: "2025-04-14T07:45:00Z"
+            }
+          ]);
+          setIsLoading(false);
+        }, 500);
+      } catch (error) {
+        console.error('Error fetching community posts:', error);
+        setIsLoading(false);
+      }
     }
-  });
-
-  const { data: groups, isLoading: isLoadingGroups } = useQuery<CommunityGroup[]>({
-    queryKey: ['/api/community/groups'],
-    queryFn: async () => {
-      return apiRequest<CommunityGroup[]>('GET', '/api/community/groups');
-    }
-  });
-
-  const { data: memberships, isLoading: isLoadingMemberships } = useQuery<UserGroupMembership[]>({
-    queryKey: ['/api/community/memberships/user'],
-    queryFn: async () => {
-      return apiRequest<UserGroupMembership[]>('GET', '/api/community/memberships/user');
-    }
-  });
-
-  // Find user's groups based on memberships
-  const userGroups = groups?.filter(group => 
-    memberships?.some(membership => membership.groupId === group.id)
-  ) || [];
-
-  const activeChallenges = challenges?.filter(challenge => 
-    new Date(challenge.endDate) > new Date()
-  ).slice(0, 2) || [];
-
-  // Join a challenge
-  const joinChallenge = async (challengeId: number) => {
-    try {
-      await apiRequest('POST', '/api/challenges/join', { challengeId });
-      // Refetch challenges
-      queryClient.invalidateQueries({ queryKey: ['/api/challenges'] });
-    } catch (error) {
-      console.error("Error joining challenge:", error);
-    }
+    
+    fetchPosts();
+  }, []);
+  
+  const likePost = (postId: number) => {
+    setPosts(prevPosts => 
+      prevPosts.map(post => 
+        post.id === postId 
+          ? { ...post, likes: post.likes + 1 } 
+          : post
+      )
+    );
   };
-
-  if (isLoadingChallenges || isLoadingGroups || isLoadingMemberships) {
+  
+  if (isLoading) {
     return (
-      <div className="mt-8">
-        <div className="h-8 w-48 bg-slate-200 dark:bg-slate-700 animate-pulse rounded-md mb-6"></div>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-slate-200 dark:border-slate-700">
-            <div className="h-6 w-32 bg-slate-200 dark:bg-slate-700 animate-pulse rounded-md mb-4"></div>
-            <div className="space-y-4">
-              {[...Array(2)].map((_, i) => (
-                <div key={i} className="flex items-center mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
-                  <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse mr-4"></div>
-                  <div className="flex-grow">
-                    <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded mb-2 animate-pulse"></div>
-                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-slate-200 dark:border-slate-700">
-            <div className="h-6 w-32 bg-slate-200 dark:bg-slate-700 animate-pulse rounded-md mb-4"></div>
-            <div className="space-y-4">
-              {[...Array(2)].map((_, i) => (
-                <div key={i} className="flex items-center mb-4 pb-4 border-b border-slate-100 dark:border-slate-700">
-                  <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse mr-4"></div>
-                  <div className="flex-grow">
-                    <div className="h-5 bg-slate-200 dark:bg-slate-700 rounded mb-2 animate-pulse"></div>
-                    <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded animate-pulse"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-8 border border-slate-200 dark:border-slate-700 animate-pulse">
+        <div className="h-6 bg-slate-200 dark:bg-slate-700 rounded w-1/3 mb-6"></div>
+        <div className="h-24 bg-slate-200 dark:bg-slate-700 rounded w-full mb-4"></div>
+        <div className="h-24 bg-slate-200 dark:bg-slate-700 rounded w-full"></div>
       </div>
     );
   }
-
+  
   return (
-    <div>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-poppins font-semibold">Community</h2>
-        <Link href="/community" className="text-primary hover:text-primary-dark text-sm font-medium">
-          Find Groups 
-          <svg className="h-4 w-4 inline-block ml-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-8 border border-slate-200 dark:border-slate-700">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-poppins font-semibold">Community Feed</h2>
+        <button className="text-primary hover:text-primary-dark text-sm font-medium flex items-center">
+          <svg className="w-4 h-4 mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
-        </Link>
+          New Post
+        </button>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-slate-200 dark:border-slate-700">
-          <h3 className="font-poppins font-semibold text-lg mb-4">Active Challenges</h3>
-          
-          {activeChallenges.length > 0 ? (
-            activeChallenges.map((challenge) => {
-              const daysLeft = differenceInDays(new Date(challenge.endDate), new Date());
-              const isJoined = false; // This would come from actual user data
-              
-              return (
-                <div key={challenge.id} className="community-group-card">
-                  <div className={`community-group-icon ${challenge.challengeType === 'quran' ? 'bg-primary/10' : 'bg-accent/10'}`}>
-                    {challenge.challengeType === 'quran' ? (
-                      <svg className="h-5 w-5 text-primary" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 6.25278V19.2528M12 6.25278C10.8321 5.47686 9.24649 5 7.5 5C5.75351 5 4.16789 5.47686 3 6.25278V19.2528C4.16789 18.4769 5.75351 18 7.5 18C9.24649 18 10.8321 18.4769 12 19.2528M12 6.25278C13.1679 5.47686 14.7535 5 16.5 5C18.2465 5 19.8321 5.47686 21 6.25278V19.2528C19.8321 18.4769 18.2465 18 16.5 18C14.7535 18 13.1679 18.4769 12 19.2528" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    ) : (
-                      <svg className="h-5 w-5 text-accent" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 5.5C10.8954 5.5 10 6.39543 10 7.5C10 8.60457 9.10457 9.5 8 9.5M12 5.5C13.1046 5.5 14 6.39543 14 7.5C14 8.60457 14.8954 9.5 16 9.5M12 5.5L12 14M12 14C10.8954 14 10 14.8954 10 16M12 14C13.1046 14 14 14.8954 14 16M8 19H16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                    )}
-                  </div>
-                  <div className="flex-grow">
-                    <h4 className="font-medium mb-1">{challenge.name}</h4>
-                    <div className="flex items-center text-xs text-slate-500 dark:text-slate-400">
-                      <span>
-                        <svg className="h-3 w-3 inline-block mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M17 20H22V18C22 16.3431 20.6569 15 19 15C18.0444 15 17.1931 15.4468 16.6438 16.1429M17 20H7M17 20V18C17 17.3438 16.8736 16.717 16.6438 16.1429M16.6438 16.1429C15.6229 14.5234 13.9187 13.4999 12 13.4999C10.0813 13.4999 8.37708 14.5234 7.35617 16.1429M7 20V18C7 17.3438 7.12642 16.717 7.35617 16.1429M7 20H2V18C2 16.3431 3.34315 15 5 15C5.95561 15 6.80686 15.4468 7.35617 16.1429M15 7C15 8.65685 13.6569 10 12 10C10.3431 10 9 8.65685 9 7C9 5.34315 10.3431 4 12 4C13.6569 4 15 5.34315 15 7ZM21 10C21 11.1046 20.1046 12 19 12C17.8954 12 17 11.1046 17 10C17 8.89543 17.8954 8 19 8C20.1046 8 21 8.89543 21 10ZM7 10C7 11.1046 6.10457 12 5 12C3.89543 12 3 11.1046 3 10C3 8.89543 3.89543 8 5 8C6.10457 8 7 8.89543 7 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        {challenge.participants} participants
-                      </span>
-                      <span className="mx-2">•</span>
-                      <span>
-                        <svg className="h-3 w-3 inline-block mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        {daysLeft} days left
-                      </span>
-                    </div>
-                  </div>
-                  <button 
-                    className={`text-xs rounded-full px-3 py-1 ${isJoined ? 
-                      'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300' : 
-                      'bg-primary text-white'}`}
-                    onClick={() => !isJoined && joinChallenge(challenge.id)}
-                    disabled={isJoined}
-                  >
-                    {isJoined ? 'Joined' : 'Join'}
-                  </button>
-                </div>
-              );
-            })
-          ) : (
-            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-              <p>No active challenges at the moment.</p>
-              <Link href="/community" className="text-primary hover:underline mt-2 inline-block">
-                Create a new challenge
-              </Link>
-            </div>
-          )}
-        </div>
-        
-        <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 border border-slate-200 dark:border-slate-700">
-          <h3 className="font-poppins font-semibold text-lg mb-4">Your Study Groups</h3>
-          
-          {userGroups.length > 0 ? (
-            userGroups.map((group, index) => (
-              <div key={group.id} 
-                className={`community-group-card ${index < userGroups.length - 1 ? 'border-b border-slate-100 dark:border-slate-700' : ''}`}
-              >
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden mr-4 bg-slate-100 dark:bg-slate-700 flex items-center justify-center">
-                  {group.type === 'study' ? (
-                    <svg className="h-6 w-6 text-slate-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 6.25278V19.2528M12 6.25278C10.8321 5.47686 9.24649 5 7.5 5C5.75351 5 4.16789 5.47686 3 6.25278V19.2528C4.16789 18.4769 5.75351 18 7.5 18C9.24649 18 10.8321 18.4769 12 19.2528M12 6.25278C13.1679 5.47686 14.7535 5 16.5 5C18.2465 5 19.8321 5.47686 21 6.25278V19.2528C19.8321 18.4769 18.2465 18 16.5 18C14.7535 18 13.1679 18.4769 12 19.2528" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  ) : (
-                    <svg className="h-6 w-6 text-slate-500" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M17 20H22V18C22 16.3431 20.6569 15 19 15C18.0444 15 17.1931 15.4468 16.6438 16.1429M17 20H7M17 20V18C17 17.3438 16.8736 16.717 16.6438 16.1429M16.6438 16.1429C15.6229 14.5234 13.9187 13.4999 12 13.4999C10.0813 13.4999 8.37708 14.5234 7.35617 16.1429M7 20V18C7 17.3438 7.12642 16.717 7.35617 16.1429M7 20H2V18C2 16.3431 3.34315 15 5 15C5.95561 15 6.80686 15.4468 7.35617 16.1429M15 7C15 8.65685 13.6569 10 12 10C10.3431 10 9 8.65685 9 7C9 5.34315 10.3431 4 12 4C13.6569 4 15 5.34315 15 7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  )}
-                </div>
-                <div className="flex-grow">
-                  <h4 className="font-medium mb-1">{group.name}</h4>
-                  <div className="flex items-center text-xs text-slate-500 dark:text-slate-400">
-                    <span>
-                      <svg className="h-3 w-3 inline-block mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17 20H22V18C22 16.3431 20.6569 15 19 15C18.0444 15 17.1931 15.4468 16.6438 16.1429M17 20H7M17 20V18C17 17.3438 16.8736 16.717 16.6438 16.1429M16.6438 16.1429C15.6229 14.5234 13.9187 13.4999 12 13.4999C10.0813 13.4999 8.37708 14.5234 7.35617 16.1429M7 20V18C7 17.3438 7.12642 16.717 7.35617 16.1429M7 20H2V18C2 16.3431 3.34315 15 5 15C5.95561 15 6.80686 15.4468 7.35617 16.1429M15 7C15 8.65685 13.6569 10 12 10C10.3431 10 9 8.65685 9 7C9 5.34315 10.3431 4 12 4C13.6569 4 15 5.34315 15 7ZM21 10C21 11.1046 20.1046 12 19 12C17.8954 12 17 11.1046 17 10C17 8.89543 17.8954 8 19 8C20.1046 8 21 8.89543 21 10ZM7 10C7 11.1046 6.10457 12 5 12C3.89543 12 3 11.1046 3 10C3 8.89543 3.89543 8 5 8C6.10457 8 7 8.89543 7 10Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      {group.memberCount} members
-                    </span>
-                    <span className="mx-2">•</span>
-                    <span>
-                      <svg className="h-3 w-3 inline-block mr-1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M8 7V3M16 7V3M7 11H17M5 21H19C20.1046 21 21 20.1046 21 19V7C21 5.89543 20.1046 5 19 5H5C3.89543 5 3 5.89543 3 7V19C3 20.1046 3.89543 21 5 21Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      </svg>
-                      Meets on {group.meetingDay || 'N/A'}
-                    </span>
-                  </div>
-                </div>
-                {index === 0 && (
-                  <span className="bg-accent/10 text-accent text-xs rounded-full px-2 py-1">
-                    New Activity
-                  </span>
-                )}
-                {index > 0 && (
-                  <Link href={`/community/groups/${group.id}`} className="bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs rounded-full px-3 py-1">
-                    <svg className="h-3 w-3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M9 5L16 12L9 19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </Link>
-                )}
+      <div className="relative mb-6">
+        <input 
+          type="text" 
+          placeholder="What's on your mind today?" 
+          className="border border-slate-200 dark:border-slate-700 rounded-lg px-4 py-3 w-full bg-white dark:bg-slate-800"
+        />
+      </div>
+      
+      <div className="space-y-6">
+        {posts.map(post => (
+          <div key={post.id} className="border-b border-slate-100 dark:border-slate-700 pb-6 last:border-0 last:pb-0">
+            <div className="flex mb-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-3">
+                <span className="font-semibold">{post.userAvatar || post.username.charAt(0)}</span>
               </div>
-            ))
-          ) : (
-            <div className="text-center py-8 text-slate-500 dark:text-slate-400">
-              <p>You're not a member of any study groups yet.</p>
-              <Link href="/community" className="text-primary hover:underline mt-2 inline-block">
-                Find a group to join
-              </Link>
+              <div>
+                <h3 className="font-medium">{post.username}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {new Date(post.createdAt).toLocaleDateString()} • {new Date(post.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                </p>
+              </div>
             </div>
-          )}
-        </div>
+            
+            <p className="text-slate-700 dark:text-slate-300 mb-3">
+              {post.content}
+            </p>
+            
+            {post.tags && post.tags.length > 0 && (
+              <div className="flex flex-wrap mb-3">
+                {post.tags.map((tag, i) => (
+                  <span 
+                    key={i} 
+                    className="text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 px-2 py-1 rounded-full mr-2 mb-1"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+            
+            <div className="flex items-center space-x-4">
+              <button 
+                className="flex items-center text-slate-500 dark:text-slate-400 hover:text-primary"
+                onClick={() => likePost(post.id)}
+              >
+                <svg className="w-4 h-4 mr-1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M7 11V19C7 19.5304 6.78929 20.0391 6.41421 20.4142C6.03914 20.7893 5.53043 21 5 21H3C2.46957 21 1.96086 20.7893 1.58579 20.4142C1.21071 20.0391 1 19.5304 1 19V11C1 10.4696 1.21071 9.96086 1.58579 9.58579C1.96086 9.21071 2.46957 9 3 9H5C5.53043 9 6.03914 9.21071 6.41421 9.58579C6.78929 9.96086 7 10.4696 7 11Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M21.0272 9.5C21.3415 9.75528 21.5886 10.0821 21.7462 10.4507C21.9038 10.8193 21.9667 11.2194 21.9302 11.616L20.9302 19.616C20.8599 20.3659 20.4918 21.0612 19.9088 21.5721C19.3258 22.083 18.5698 22.3725 17.8152 22.388H11.3302C10.9567 22.3878 10.5854 22.3295 10.2302 22.215L7.00018 21M7.00018 11V7C7.00018 5.93913 7.42161 4.92172 8.17175 4.17157C8.9219 3.42143 9.93931 3 11.0002 3C11.5306 3 12.0393 3.21071 12.4144 3.58579C12.7894 3.96086 13.0002 4.46957 13.0002 5V11H21.0272Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                {post.likes}
+              </button>
+              
+              <button className="flex items-center text-slate-500 dark:text-slate-400 hover:text-primary">
+                <svg className="w-4 h-4 mr-1.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                {post.comments}
+              </button>
+              
+              <button className="flex items-center text-slate-500 dark:text-slate-400 hover:text-primary ml-auto">
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4 12V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M16 6L12 2L8 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M12 2V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="pt-4 text-center">
+        <button className="text-primary hover:text-primary-dark text-sm font-medium">
+          View More Posts
+        </button>
       </div>
     </div>
   );

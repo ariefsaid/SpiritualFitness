@@ -3,110 +3,114 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-rgb: 255, 255, 255;
-  --primary: #3b82f6; /* Blue */
-  --primary-dark: #2563eb;
-  --accent: #8b5cf6; /* Purple */
-  --accent-dark: #7c3aed;
+  --primary: #10b981; /* Emerald-500 */
+  --primary-dark: #059669; /* Emerald-600 */
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-rgb: 15, 23, 42;
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+ 
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+ 
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+ 
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+ 
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+ 
+    --primary: 142.1 76.2% 36.3%;
+    --primary-foreground: 210 40% 98%;
+ 
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+ 
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+ 
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --ring: 215 20.2% 65.1%;
+ 
+    --radius: 0.5rem;
+  }
+ 
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+ 
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+ 
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+ 
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+ 
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+ 
+    --card: 224 71% 4%;
+    --card-foreground: 213 31% 91%;
+ 
+    --primary: 142.1 70.6% 45.3%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+ 
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+ 
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+ 
+    --ring: 216 34% 17%;
+ 
+    --radius: 0.5rem;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+@font-face {
+  font-family: 'poppins';
+  font-weight: 400;
+  src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 }
 
-/* Custom component styles */
-.has-bottom-nav {
-  padding-bottom: 80px;
+.font-poppins {
+  font-family: 'poppins', var(--font-inter), system-ui, sans-serif;
 }
 
-.community-group-card {
-  display: flex;
-  align-items: center;
-  padding-bottom: 1rem;
-  margin-bottom: 1rem;
-}
-
-.community-group-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 9999px;
-  margin-right: 1rem;
-}
-
-.achievement-icon {
-  margin: 0 auto;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 9999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0.75rem;
-}
-
-.achievement-icon-completed {
-  background-color: rgba(59, 130, 246, 0.1);
-}
-
-.achievement-icon-progress {
-  background-color: rgba(139, 92, 246, 0.1);
-}
-
-.achievement-icon-locked {
-  background-color: rgba(203, 213, 225, 0.1);
-}
-
-.achievement-badge-completed {
-  background-color: var(--primary);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-}
-
-.achievement-badge-progress {
-  background-color: var(--accent);
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-}
-
-.achievement-badge-locked {
-  background-color: rgba(203, 213, 225, 0.5);
-  color: rgb(100, 116, 139);
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  font-size: 0.75rem;
-}
-
-/* Arabic text styles */
 .arabic-text {
-  font-family: "Scheherazade New", serif;
+  font-family: 'Traditional Arabic', 'Scheherazade New', serif;
+  font-size: 1.5rem;
+  line-height: 2.5rem;
   direction: rtl;
   text-align: right;
 }
 
-/* Quran card styles */
-.quran-card {
-  background-color: rgba(59, 130, 246, 0.05);
-  padding: 1rem;
-  border-radius: 0.5rem;
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
-/* Animations */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

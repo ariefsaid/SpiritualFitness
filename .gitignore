@@ -1,7 +1,47 @@
+# Dependencies
 node_modules
+.pnp
+.pnp.js
+
+# Build outputs
 dist
+.next/
+out/
+build
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Misc
 .DS_Store
-server/public
-vite.config.ts.*
+*.pem
 *.tar.gz
-rules/
+server/public
+
+# Cache
+.vercel
+.turbo
+
+# Next.js specific
+.next/
+out/
+next-env.d.ts
+
+# Logs
+logs
+*.log
+
+# Editor directories
+.idea
+.vscode
+*.swp
+*.swo
