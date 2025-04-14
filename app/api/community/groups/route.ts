@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { storage } from '../../../../server/storage';
-import { logRequest, errorResponse, getCurrentUser, validateBody } from '../../middleware';
-import { insertCommunityGroupSchema } from '../../../../shared/schema';
+import { storage } from '../../../lib/storage';
+import { logRequest, errorResponse, validateBody } from '../../middleware';
+import { insertCommunityGroupSchema } from '../../../lib/schema';
 
 /**
  * GET /api/community/groups

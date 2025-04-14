@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { storage } from '../../../../server/storage';
+import { storage } from '../../../lib/storage';
+import { logRequest, errorResponse } from '../../middleware';
 
 /**
  * PUT /api/achievements/[id]
@@ -10,6 +11,8 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
+  const logger = logRequest(request, `/api/achievements/${params.id}`);
+  
   try {
     // TODO: Implement proper authentication
     // For now, we'll use a fixed user ID (1) for testing
@@ -18,10 +21,8 @@ export async function PUT(
     // Get achievement ID from URL params
     const id = parseInt(params.id);
     if (isNaN(id)) {
-      return new NextResponse(
-        JSON.stringify({ message: 'Invalid achievement ID' }), 
-        { status: 400 }
-      );
+      logger.finish(400);
+      return errorResponse('Invalid achievement ID', 400);
     }
     
     // Parse request body
@@ -31,26 +32,21 @@ export async function PUT(
     const achievement = await storage.updateAchievement(id, body);
     
     if (!achievement) {
-      return new NextResponse(
-        JSON.stringify({ message: 'Achievement not found' }), 
-        { status: 404 }
-      );
+      logger.finish(404);
+      return errorResponse('Achievement not found', 404);
     }
     
     // Check if this achievement belongs to the user
     if (achievement.userId !== userId) {
-      return new NextResponse(
-        JSON.stringify({ message: 'Forbidden' }), 
-        { status: 403 }
-      );
+      logger.finish(403);
+      return errorResponse('Forbidden', 403);
     }
     
+    logger.finish(200, achievement);
     return NextResponse.json(achievement);
   } catch (err) {
     console.error(`Error updating achievement ${params.id}:`, err);
-    return new NextResponse(
-      JSON.stringify({ message: 'Error updating achievement' }), 
-      { status: 500 }
-    );
+    logger.finish(500);
+    return errorResponse('Error updating achievement', 500);
   }
 }

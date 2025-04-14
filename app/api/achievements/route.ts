@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { storage } from '../../../server/storage';
+import { storage } from '../../lib/storage';
+import { logRequest, errorResponse } from '../middleware';
 
 /**
  * GET /api/achievements
@@ -7,6 +8,8 @@ import { storage } from '../../../server/storage';
  * NOTE: This is a temporary implementation that returns mock data until we implement authentication in Next.js
  */
 export async function GET(request: NextRequest) {
+  const logger = logRequest(request, '/api/achievements');
+  
   try {
     // TODO: Implement proper authentication
     // For now, we'll use a fixed user ID (1) for testing
@@ -15,13 +18,12 @@ export async function GET(request: NextRequest) {
     // Get achievements for the user
     const achievements = await storage.getAchievementsByUserId(userId);
     
+    logger.finish(200, { count: achievements.length });
     return NextResponse.json(achievements);
   } catch (err) {
     console.error('Error fetching achievements:', err);
-    return new NextResponse(
-      JSON.stringify({ message: 'Error fetching achievements' }), 
-      { status: 500 }
-    );
+    logger.finish(500);
+    return errorResponse('Error fetching achievements', 500);
   }
 }
 
@@ -31,6 +33,8 @@ export async function GET(request: NextRequest) {
  * NOTE: This is a temporary implementation until we implement authentication in Next.js
  */
 export async function POST(request: NextRequest) {
+  const logger = logRequest(request, '/api/achievements');
+  
   try {
     // TODO: Implement proper authentication
     // For now, we'll use a fixed user ID (1) for testing
@@ -45,12 +49,11 @@ export async function POST(request: NextRequest) {
       userId,
     });
     
+    logger.finish(201, achievement);
     return NextResponse.json(achievement, { status: 201 });
   } catch (err) {
     console.error('Error creating achievement:', err);
-    return new NextResponse(
-      JSON.stringify({ message: 'Error creating achievement' }), 
-      { status: 500 }
-    );
+    logger.finish(500);
+    return errorResponse('Error creating achievement', 500);
   }
 }
