@@ -3,9 +3,9 @@
 
 ## Clerk Dashboard Setup (https://dashboard.clerk.com)
 
-1. Create New Application
+1. [x] Create New Application
    - Click "Add Application" button
-   - Name it "SpiritualFit"
+   - Name it "FaithfulSteps"
    - Select "Next.js" as your framework
 
 2. Set Up Authentication Methods
@@ -30,7 +30,7 @@
 
 1. Create New Project
    - Click "New project" button
-   - Name it "spiritualfit"
+   - Name it "FaithfulSteps"
    - Choose a strong database password
    - Select closest region
    - Wait for setup (~2 minutes)
