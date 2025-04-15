@@ -3,39 +3,51 @@
 
 ## 1. Dependencies Status
 - ✅ Next.js with TypeScript (already set up)
-- ✅ Clerk SDK (package.json shows it's installed)
-- ⚠️ Need to install Supabase client:
+- ⚠️ Need to install Clerk SDK:
   ```bash
-  npm install @supabase/supabase-js
+  npm install @clerk/nextjs
   ```
+- ✅ Supabase client installed
 
 ## 2. Key Files to Create/Update
+
+### Authentication Components (Using Clerk's Pre-built UI)
+- Use `<SignIn />` component for sign-in
+- Use `<SignUp />` component for registration 
+- Use `<UserButton />` for user menu
+- Use `<SignedIn>` and `<SignedOut>` for conditional rendering
 
 ### Authentication Layer
 - Create: `app/lib/supabase.ts` - Supabase client with Clerk token integration
 - Update: `app/middleware.ts` - Configure Clerk middleware
-- Create: `app/providers.tsx` - Add Clerk provider wrapper
+- Update: `app/providers.tsx` - Add ClerkProvider wrapper
 
 ### Base Configuration
 - Environment variables already configured (✅)
 - Middleware protection for authenticated routes
 - Supabase-Clerk token forwarding setup
 
-### Folder Structure (Current = Good)
+### Folder Structure
 ```
 app/
   lib/
     supabase.ts (new)
   middleware.ts (update)
-  providers.tsx (new)
+  providers.tsx (update)
+  (sign-in)/
+    [[...sign-in]]/
+      page.tsx (using Clerk's <SignIn/>)
+  (sign-up)/
+    [[...sign-up]]/
+      page.tsx (using Clerk's <SignUp/>)
 ```
 
 ## 3. Implementation Steps
 
-1. Initialize Supabase client with Clerk integration
-2. Set up Clerk middleware for route protection
-3. Add Clerk provider to wrap application
-4. Configure Supabase RLS policies
+1. Configure ClerkProvider in app wrapper
+2. Set up authentication pages using Clerk components
+3. Initialize Supabase client with Clerk integration
+4. Set up Clerk middleware for route protection
 5. Test authentication flow
 
 ## 4. Next Steps (Future Tickets)

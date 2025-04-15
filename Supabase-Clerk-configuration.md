@@ -1,10 +1,48 @@
 
-# Minimum Viable Supabase-Clerk Configuration
+# Step-by-Step Supabase & Clerk Configuration Guide
 
-## Supabase Dashboard Setup
+## Clerk Dashboard Setup (https://dashboard.clerk.com)
 
-1. Enable Row Level Security (RLS) on all tables
-2. Create base users table:
+1. Create New Application
+   - Click "Add Application" button
+   - Name it "SpiritualFit"
+   - Select "Next.js" as your framework
+
+2. Set Up Authentication Methods
+   - Go to "JWT Templates" in sidebar
+   - Click "New Template"
+   - Choose "Supabase" from templates
+   - Copy provided template
+   - Click "Create Template"
+
+3. Enable Sign-In Methods
+   - Go to "User & Authentication" → "Email, Phone, Username"
+   - Enable "Email/Password"
+   - (Optional) Enable "Google" under "Social Connections"
+
+4. Copy Environment Variables
+   - Go to "API Keys" in sidebar
+   - Copy "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"
+   - Copy "CLERK_SECRET_KEY"
+   - These are already set in Replit Secrets ✅
+
+## Supabase Project Setup (https://app.supabase.com)
+
+1. Create New Project
+   - Click "New project" button
+   - Name it "spiritualfit"
+   - Choose a strong database password
+   - Select closest region
+   - Wait for setup (~2 minutes)
+
+2. Get Project Credentials
+   - Go to Project Settings → API
+   - Copy "Project URL" (already set as SUPABASE_URL in Replit) ✅
+   - Copy "anon/public" key (already set as SUPABASE_ANON_KEY in Replit) ✅
+
+3. Create Base Tables
+   - Go to "SQL Editor"
+   - Copy and paste this SQL:
 
 ```sql
 -- Create users table
@@ -32,27 +70,19 @@ FOR UPDATE
 USING (auth.uid() = clerk_id);
 ```
 
-## Clerk Dashboard Setup
+4. Run the SQL query
+   - Click "Run" button
+   - Verify tables are created under "Database" → "Tables"
 
-1. Configure Supabase as JWT template:
-   - Navigate to JWT Templates
-   - Add new template for Supabase
-   - Set custom claims:
-     ```json
-     {
-       "role": "authenticated"
-     }
-     ```
+## Verification Steps
 
-2. Enable required authentication methods:
-   - Email/Password
-   - OAuth (optional)
+1. Check Clerk Setup
+   - Visit your app URL
+   - Click Sign In/Sign Up
+   - Try to create a new account
+   - Verify you can sign in
 
-## Basic Integration Test
-
-1. Sign in with Clerk
-2. Verify JWT token contains required Supabase claims
-3. Test Supabase authenticated query
-4. Verify RLS policies are working
-
-Note: This is the minimal setup required for authentication. Additional tables and policies will be added in subsequent tickets.
+2. Check Supabase Connection
+   - Sign in to your app
+   - Check browser console for any errors
+   - Verify user entry is created in Supabase users table
