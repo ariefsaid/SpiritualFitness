@@ -24,8 +24,11 @@
 
 ### Base Configuration
 - [x] Environment variables already configured 
-- Middleware protection for authenticated routes
-- Supabase-Clerk token forwarding setup
+- [x] Middleware protection for authenticated routes
+- Token forwarding setup:
+  - [x] Configure Clerk as auth provider in Supabase
+  - [ ] Create Supabase client with Clerk token forwarding
+  - [ ] Test RLS policies with forwarded token
 
 ### Folder Structure
 ```
