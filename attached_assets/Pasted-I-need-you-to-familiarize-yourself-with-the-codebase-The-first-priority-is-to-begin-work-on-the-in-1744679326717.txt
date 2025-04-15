@@ -1,0 +1,42 @@
+I need you to familiarize yourself with the codebase.
+
+The first priority is to begin work on the initial ticket under Epic 1: Project Foundation & Authentication, which focuses on integrating Clerk (for user authentication) and Supabase (for database and bucket storage).
+
+Ticket Details: <Ticket>
+ ## Epic 1: Project Foundation & Authentication
+
+**Goal:** Establish the core project structure for Faithful Steps using Next.js, set up the development environment, and implement secure user authentication using Clerk, enabling users to sign up, log in, and have their identity managed. Connect the frontend to the Supabase backend.
+
+**FS-1: Setup Clerk and Supabase (Next.js)**  
+     
+   * **Background:** Initialize the Replit environment for a Next.js (TypeScript) project with Clerk and Supabase. Set up necessary dependencies (Supabase client, Clerk client SDK).  
+   * **Acceptance Criteria:**  
+     * A new Next.js (TypeScript) project is created and runnable on Replit. (DONE)  
+     * Supabase JS client  is installed.  
+     * Clerk Next.js SDK is installed.  
+   </Ticket>  Resources Provided:
+	•	Quickstart guides in:
+	•	@/Reference/Clerk/
+	•	@/Reference/Supabase/
+	•	Replit secrets already configured:
+	•	NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+	•	CLERK_SECRET_KEY
+	•	SUPABASE_URL
+	•	SUPABASE_ANON_KEY
+
+⸻ 
+Your Tasks:
+	1.	Create implementation-plan.md
+This document should outline the step-by-step plan to integrate Clerk and Supabase into the existing codebase. Include:
+	•	Dependencies to install
+	•	Key files to update or create
+	•	Folder structure suggestions (if applicable)
+	•	Any required config or environment handling
+	2.	Create Supabase Clerk configuration.md
+This doc should contain the minimum viable setup to enable working auth. Include:
+	•	Steps to configure Supabase and Clerk dashboards
+	•	SQL to create necessary base tables (e.g., users)
+	•	Policies (RLS) required to allow authenticated access
+	•	Basic integration walkthrough (e.g., setting up auth listeners, linking user sessions to Supabase)
+
+We’ll expand on features and security in later phases, but for now, the focus is on getting a clean, working baseline for authentication and storage.
