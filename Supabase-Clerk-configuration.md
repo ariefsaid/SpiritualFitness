@@ -8,12 +8,12 @@
    - Name it "FaithfulSteps"
    - Select "Next.js" as your framework
 
-2. Set Up Authentication Methods
-   - Go to "JWT Templates" in sidebar
-   - Click "New Template"
-   - Choose "Supabase" from templates
-   - Copy provided template
-   - Click "Create Template"
+2. Set Up Native Integration
+   - Go to Clerk Dashboard → "Supabase integration setup"
+   - Select configuration options and click "Activate Supabase integration"
+   - Copy the provided Clerk domain
+   - In Supabase Dashboard → "Authentication" → "Sign In / Up"
+   - Add Clerk as a provider and paste the Clerk domain
 
 3. Enable Sign-In Methods
    - Go to "User & Authentication" → "Email, Phone, Username"

@@ -9,7 +9,7 @@ export function createServerSupabaseClient() {
   return createClient(supabaseUrl, supabaseKey, {
     global: {
       headers: {
-        Authorization: `Bearer ${auth().getToken({ template: 'supabase' })}`
+        Authorization: `Bearer ${auth().getToken()}`
       }
     }
   });
