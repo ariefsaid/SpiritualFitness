@@ -1,5 +1,6 @@
 import React from 'react';
 import CommunitySection from '@/components/CommunitySection';
+import UserProfileButton from '@/components/UserProfileButton';
 import { currentUser } from '@clerk/nextjs/server';
 
 /**
@@ -20,6 +21,9 @@ export default async function CommunityPage() {
             <p className="text-slate-600 dark:text-slate-400">
               You're signed in as {user?.emailAddresses[0]?.emailAddress || user?.username || "authenticated user"}
             </p>
+            
+            {/* Button to check/create Supabase profile - demonstrates Clerk+Supabase integration */}
+            <UserProfileButton />
           </div>
           <div className="client-only">
             {/* UserButton is a client component, will be rendered in a client wrapper component */}
