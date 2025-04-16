@@ -1,0 +1,33 @@
+Please familiarize yourself with the existing codebase. We are integrating Supabase (for database and bucket storage) and Clerk (for user authentication) into this application.
+
+<Ticket> ## Epic 1: Project Foundation & Authentication
+Goal: Establish the core project structure for Faithful Steps using Next.js, set up the development environment, and implement secure user authentication using Clerk, enabling users to sign up, log in, and have their identity managed. Connect the frontend to the Supabase backend.
+
+FS-2: Implement User Registration & Login UI with Clerk (Next.js)
+
+Background: Create the basic UI components for user sign-up and sign-in using Next.js file-based routing. Integrate Clerk's Next.js components or use Clerk SDK hooks to build custom forms for handling registration and login using Clerk. Protect specific routes (community for now just to test functionality).
+Acceptance Criteria:
+A dedicated /sign-up route/page exists using Clerk's component.
+A dedicated /sign-in route/page exists using Clerk's component.
+Users can successfully register via the UI, handled by Clerk.
+Users can successfully log in via the UI, handled by Clerk.
+Appropriate loading states and error messages from Clerk are displayed to the user during auth processes.
+Basic route protection using Clerk's Next.js helpers (e.g., withAuth) protects authenticated routes (e.g., a placeholder /community).
+</Ticket>
+Resources Provided:
+I have provided the relevant quickstart documentations and chat transcript with assistants for clerk and supabase integrations, in the @/Reference/Clerk/ and @/Reference/Supabase/ respectively. I have also setup relevant API Keys for Clerk and Database in Replit Secrets, namely:
+-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+-CLERK_SECRET_KEY
+-SUPABASE_URL
+-SUPABASE_ANON_KEY
+
+Your Tasks:
+1. Read both implementation-plan.md and Supabase-Clerk-configuration.md. These contain:
+• Completed setup steps
+• Created database tables
+• Configuration already done in Supabase and Clerk
+2. Implement a Minimum Viable Setup based on all the above context to meet the acceptance criteria for FS-2:
+• Use Clerk pre-built components to build and test the sign-up and sign-in flow.
+• Implement basic route protection for the /community route.
+
+Focus on getting the basic authentication flow working end-to-end. We’ll build on this foundation in future tickets, so don’t worry about extended features or edge cases yet.
