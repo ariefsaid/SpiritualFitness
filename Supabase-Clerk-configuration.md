@@ -86,7 +86,7 @@ WITH CHECK (auth.jwt()->>'sub' = user_id::text);
 
 ## Verification Steps
 
-1. [x] Check Clerk Setup
+1. [ ] Check Clerk Setup
    - Visit your app URL
    - Click Sign In/Sign Up
    - Try to create a new account

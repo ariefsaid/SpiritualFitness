@@ -1,0 +1,31 @@
+improve the following:
+
+I need you to familiarize yourself with the codebase. I want to implement supabase (for database and bucket storage) and clerk (for Authentication) for this app
+
+<Ticket>
+ ## Epic 1: Project Foundation & Authentication
+
+**Goal:** Establish the core project structure for Faithful Steps using Next.js, set up the development environment, and implement secure user authentication using Clerk, enabling users to sign up, log in, and have their identity managed. Connect the frontend to the Supabase backend.
+
+2. **FS-2: Implement User Registration & Login UI with Clerk (Next.js)**  
+     
+   * **Background:** Create the basic UI components for user sign-up and sign-in using Next.js file-based routing. Integrate Clerk's Next.js components or use Clerk SDK hooks to build custom forms for handling registration and login.in Clerk. Protect specific routes (community for now just to test functionality).  
+   * **Acceptance Criteria:**  
+     * A dedicated `/sign-up` route/page exists using Clerk's component.  
+     * A dedicated `/sign-in` route/page exists using Clerk's component.  
+     * Users can successfully register via the UI, handled by Clerk.  
+     * Users can successfully log in via the UI, handled by Clerk.  
+     * Appropriate loading states and error messages from Clerk are displayed to the user during auth processes.  
+     * Basic route protection using Clerk's Next.js helpers (e.g., `withAuth`) protects authenticated routes (e.g., a placeholder `/community`).  
+
+   </Ticket>
+
+I have provided the relevant quickstart documentations and chat transcript with assistants for clerk and supabase integrations, in the @/Reference/Clerk/ and @/Reference/Supabase/ respectively. I have also setup relevant API Keys for Clerk and Database in Replit Secrets, namely:
+-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+-CLERK_SECRET_KEY
+-SUPABASE_URL
+-SUPABASE_ANON_KEY
+
+I need you to do the following:
+1. read both "implementation plan.md" and "Supabase-Clerk-configuration.md" that details the steps that I have done, tables created and setup made in both environments.
+2. Try to implement a minimum viable setup according to all the context above to meet the required acceptance criteria. we can also improve and implement more during later tickets.

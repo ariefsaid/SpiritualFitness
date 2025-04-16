@@ -12,15 +12,15 @@
 ## 2. Key Files to Create/Update
 
 ### Authentication Components (Using Clerk's Pre-built UI)
-- [x] Use `<SignIn />` component for sign-in
-- [x] Use `<SignUp />` component for registration 
-- [x] Use `<UserButton />` for user menu
-- [x] Use `<SignedIn>` and `<SignedOut>` for conditional rendering
+- [ ] Use `<SignIn />` component for sign-in
+- [ ] Use `<SignUp />` component for registration 
+- [ ] Use `<UserButton />` for user menu
+- [ ] Use `<SignedIn>` and `<SignedOut>` for conditional rendering
 
 ### Authentication Layer
-- [x] Create: `app/lib/supabase-client.ts` - Supabase client with Clerk token integration
-- [x] Update: `app/middleware.ts` - Configure Clerk middleware
-- [x] Update: `app/providers.tsx` - Add ClerkProvider wrapper
+- [ ] Create: `app/lib/supabase-client.ts` - Supabase client with Clerk token integration
+- [ ] Update: `app/middleware.ts` - Configure Clerk middleware
+- [ ] Update: `app/providers.tsx` - Add ClerkProvider wrapper
 
 ### Base Configuration
 - [x] Environment variables configured 
@@ -63,10 +63,10 @@ app/
 
 ## 3. Implementation Steps
 
-1. [x] Configure ClerkProvider in app wrapper
-2. [x] Set up authentication pages using Clerk components
-3. [x] Initialize Supabase client with Clerk integration
-4. [x] Set up Clerk middleware for route protection
+1. [ ] Configure ClerkProvider in app wrapper
+2. [ ] Set up authentication pages using Clerk components
+3. [ ] Initialize Supabase client with Clerk integration
+4. [ ] Set up Clerk middleware for route protection
 5. [ ] Test authentication flow
 
 ## 4. Next Steps (Future Tickets)
