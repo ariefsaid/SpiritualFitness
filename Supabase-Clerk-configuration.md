@@ -8,19 +8,19 @@
    - Name it "FaithfulSteps"
    - Select "Next.js" as your framework
 
-2. Set Up Native Integration
+2. [x] Set Up Native Integration
    - Go to Clerk Dashboard → "Supabase integration setup"
    - Select configuration options and click "Activate Supabase integration"
    - Copy the provided Clerk domain
    - In Supabase Dashboard → "Authentication" → "Sign In / Up"
    - Add Clerk as a provider and paste the Clerk domain
 
-3. Enable Sign-In Methods
+3. [x] Enable Sign-In Methods
    - Go to "User & Authentication" → "Email, Phone, Username"
    - Enable "Email/Password"
-   - (Optional) Enable "Google" under "Social Connections"
+   - Enable "Google" under "Social Connections"
 
-4. Copy Environment Variables
+4. [x] Copy Environment Variables
    - Go to "API Keys" in sidebar
    - Copy "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY"
    - Copy "CLERK_SECRET_KEY"
@@ -28,14 +28,14 @@
 
 ## Supabase Project Setup (https://app.supabase.com)
 
-1. Create New Project
+1. [x] Create New Project
    - Click "New project" button
    - Name it "FaithfulSteps"
    - Choose a strong database password
    - Select closest region
    - Wait for setup (~2 minutes)
 
-2. Get Project Credentials
+2. [x] Get Project Credentials
    - Go to Project Settings → API
    - Copy "Project URL" (already set as SUPABASE_URL in Replit) ✅
    - Copy "anon/public" key (already set as SUPABASE_ANON_KEY in Replit) ✅

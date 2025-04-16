@@ -1,0 +1,66 @@
+I want to create connection between clerk authentication and supabase. what do I need to do to setup and configure?
+
+To set up and configure Clerk authentication with Supabase, follow these steps:
+
+Create a Clerk Account:
+
+Sign up for a Clerk account at Clerk.dev.
+Create a New Application in Clerk:
+
+After logging in, create a new application in the Clerk dashboard. This will provide you with the API keys and configuration needed for your application.
+Configure Clerk:
+
+In the Clerk dashboard, navigate to the application settings and note down the following:
+Frontend API: This is required for your frontend application to communicate with Clerk.
+API Keys: You will need these keys to authenticate requests.
+Set Up Supabase:
+
+If you haven't already, create a Supabase project at Supabase.io.
+Note down your Supabase URL and API keys from the project settings.
+Integrate Clerk with Your Frontend:
+
+Install the Clerk SDK in your frontend application. For example, if you are using React, you can install it using npm:
+npm install @clerk/clerk-react
+
+Initialize Clerk in your application by wrapping your app with the ClerkProvider and passing the frontendApi:
+import
+ { ClerkProvider } from 
+'@clerk/clerk-react'
+;
+const
+ App = () => (
+  <ClerkProvider frontendApi=
+"YOUR_FRONTEND_API"
+>
+    {
+/* Your app components */
+}
+  </ClerkProvider>
+);
+
+Authenticate Users:
+
+Use Clerk's components to handle user authentication (e.g., sign-in, sign-up). For example:
+import
+ { SignIn } from 
+'@clerk/clerk-react'
+;
+const
+ SignInPage = () => (
+  <SignIn path=
+"/sign-in"
+ routing=
+"path"
+ />
+);
+
+Link Clerk with Supabase:
+
+After a user is authenticated with Clerk, you can use the Clerk user information to create or update user profiles in Supabase. You can use the Clerk API to get the user's information and then store it in your Supabase profiles table.
+Set Up Supabase Policies:
+
+Ensure that you have Row Level Security (RLS) enabled on your Supabase tables and create appropriate policies to allow authenticated users to access their data.
+Testing:
+
+Test the integration by running your application and ensuring that users can sign in through Clerk and that their information is correctly stored and retrieved from Supabase.
+For more detailed instructions and code examples, refer to the official documentation for both Clerk and Supabase.
