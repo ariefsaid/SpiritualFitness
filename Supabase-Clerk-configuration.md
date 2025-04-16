@@ -40,49 +40,59 @@
    - Copy "Project URL" (already set as SUPABASE_URL in Replit) ✅
    - Copy "anon/public" key (already set as SUPABASE_ANON_KEY in Replit) ✅
 
-3. Create Base Tables
+3. [x] Create Base Tables
    - Go to "SQL Editor"
-   - Copy and paste this SQL:
+   - Create profiles table:
 
 ```sql
--- Create users table
-CREATE TABLE users (
-  id TEXT PRIMARY KEY,
-  clerk_id TEXT NOT NULL UNIQUE,
-  username TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+CREATE TABLE public.profiles (
+    id bigint primary key generated always as identity,
+    user_id uuid references auth.users(id) on delete cascade,
+    display_name text,
+    avatar_url text,
+    bio text,
+    created_at timestamp with time zone default now(),
+    updated_at timestamp with time zone default now()
 );
 
+-- Create an index on user_id for better performance
+CREATE INDEX idx_profiles_user_id ON public.profiles(user_id);
+
 -- Enable RLS
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 
 -- Create policy for authenticated reads
-CREATE POLICY "Users can read own data"
-ON users
-FOR SELECT
-USING (auth.uid() = clerk_id);
+CREATE POLICY "Users can read own profile" 
+ON profiles
+FOR SELECT 
+USING (auth.jwt()->>'sub' = user_id::text);
 
 -- Create policy for authenticated updates
-CREATE POLICY "Users can update own data"
-ON users
+CREATE POLICY "Users can update own profile"
+ON profiles
 FOR UPDATE
-USING (auth.uid() = clerk_id);
+USING (auth.jwt()->>'sub' = user_id::text)
+WITH CHECK (auth.jwt()->>'sub' = user_id::text);
+
+-- Create policy for authenticated inserts
+CREATE POLICY "Users can insert own profile"
+ON profiles
+FOR INSERT
+WITH CHECK (auth.jwt()->>'sub' = user_id::text);
 ```
 
-4. Run the SQL query
-   - Click "Run" button
-   - Verify tables are created under "Database" → "Tables"
+4. [x] Configure Supabase Client
+   - Verify Supabase client is initialized with Clerk token forwarding ✅
 
 ## Verification Steps
 
-1. Check Clerk Setup
+1. [x] Check Clerk Setup
    - Visit your app URL
    - Click Sign In/Sign Up
    - Try to create a new account
    - Verify you can sign in
 
-2. Check Supabase Connection
+2. [ ] Check Supabase Connection
    - Sign in to your app
    - Check browser console for any errors
-   - Verify user entry is created in Supabase users table
+   - Verify user entry is created in Supabase profiles table
