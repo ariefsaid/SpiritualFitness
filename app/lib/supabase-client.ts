@@ -9,14 +9,29 @@ const supabaseKey = process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUP
  * Create a Supabase client for server-side usage with Clerk authentication
  * This will forward the user's JWT to Supabase for RLS policy enforcement
  */
-export async function createServerSupabaseClient() {
-  const { getToken } = auth();
-  const token = await getToken({ template: 'supabase' });
-  
+export function createServerSupabaseClient() {
   return createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      persistSession: false
+    },
     global: {
-      headers: {
-        Authorization: `Bearer ${token}`
+      fetch: async (url, options = {}) => {
+        try {
+          const authObject = await auth();
+          const token = await authObject.getToken({ template: 'supabase' });
+          
+          // Add authorization header if token exists
+          if (token) {
+            options.headers = {
+              ...options.headers,
+              Authorization: `Bearer ${token}`
+            };
+          }
+        } catch (error) {
+          console.error('Error getting server token:', error);
+        }
+        
+        return fetch(url, options);
       }
     }
   });
@@ -34,11 +49,32 @@ export function createClientSupabaseClient() {
  * Create a Supabase client for client-side usage with Clerk authentication
  * This is meant to be used in a client component with the useAuth hook
  */
-export function createAuthenticatedClientSupabaseClient(token: string | null) {
+export function createAuthenticatedClientSupabaseClient(
+  getTokenOrNull: ((options?: any) => Promise<string>) | null
+) {
   return createClient(supabaseUrl, supabaseKey, {
+    auth: {
+      persistSession: false
+    },
     global: {
-      headers: {
-        Authorization: token ? `Bearer ${token}` : ''
+      fetch: async (url, options = {}) => {
+        try {
+          if (getTokenOrNull) {
+            const token = await getTokenOrNull({ template: 'supabase' });
+            
+            // Add authorization header if token exists
+            if (token) {
+              options.headers = {
+                ...options.headers,
+                Authorization: `Bearer ${token}`
+              };
+            }
+          }
+        } catch (error) {
+          console.error('Error getting client token:', error);
+        }
+        
+        return fetch(url, options);
       }
     }
   });

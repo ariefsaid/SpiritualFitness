@@ -20,11 +20,16 @@ export function useSupabase() {
     async function setupSupabase() {
       setLoading(true);
       try {
-        // Get the JWT for Supabase from Clerk
-        const token = isSignedIn ? await getToken({ template: 'supabase' }) : null;
+        // Create a function that wraps getToken to ensure it returns a string (not null)
+        const getTokenWrapper = isSignedIn 
+          ? async (options?: any) => {
+              const token = await getToken(options);
+              return token || '';
+            }
+          : null;
         
-        // Create a new Supabase client with the token
-        const client = createAuthenticatedClientSupabaseClient(token);
+        // Create a new Supabase client with the token getter function
+        const client = createAuthenticatedClientSupabaseClient(getTokenWrapper);
         setSupabase(client);
       } catch (error) {
         console.error('Error setting up Supabase client:', error);
