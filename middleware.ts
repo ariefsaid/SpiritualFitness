@@ -1,4 +1,3 @@
-
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse, type NextRequest } from 'next/server';
 
@@ -23,9 +22,6 @@ export default clerkMiddleware(async (auth, request) => {
   headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // We cannot directly modify the request.headers (it's read-only)
-  // But we'll pass the headers forward to the NextResponse
-  
   // Check if the route is protected and the user is not authenticated
   if (isProtectedRoute(request) && !userId) {
     // Redirect unauthenticated users to sign-in
