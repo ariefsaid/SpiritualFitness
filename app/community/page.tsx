@@ -1,39 +1,12 @@
 import React from 'react';
 import CommunitySection from '@/components/CommunitySection';
-import UserProfileButton from '@/components/UserProfileButton';
-import { currentUser } from '@clerk/nextjs/server';
 
 /**
- * Community Page - Protected by Clerk authentication
+ * Community Page
  */
-export default async function CommunityPage() {
-  // Get the current user (this is a server component)
-  const user = await currentUser();
+export default function CommunityPage() {
   return (
     <div className="animate-fade-in">
-      {/* Welcome section showing user info */}
-      <div className="bg-emerald-50 dark:bg-emerald-900/20 rounded-lg shadow-sm p-6 mb-8 border border-emerald-100 dark:border-emerald-800/40">
-        <div className="flex justify-between items-center">
-          <div>
-            <h2 className="text-xl font-semibold mb-1">
-              Welcome, {user?.firstName || "Friend"}!
-            </h2>
-            <p className="text-slate-600 dark:text-slate-400">
-              You're signed in as {user?.emailAddresses[0]?.emailAddress || user?.username || "authenticated user"}
-            </p>
-            
-            {/* Button to check/create Supabase profile - demonstrates Clerk+Supabase integration */}
-            <UserProfileButton />
-          </div>
-          <div className="client-only">
-            {/* UserButton is a client component, will be rendered in a client wrapper component */}
-            <div className="h-10 w-10 rounded-full bg-emerald-100 flex items-center justify-center">
-              <span className="text-emerald-600">👤</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm p-6 mb-8 border border-slate-200 dark:border-slate-700">
         <h2 className="text-xl font-poppins font-semibold mb-4">Find Groups</h2>
         <p className="text-slate-600 dark:text-slate-300 mb-6">

@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { UserButton, SignInButton, SignedIn, SignedOut } from '@clerk/nextjs';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -96,25 +95,11 @@ export default function Header() {
               )}
             </button>
             
-            <div className="hidden md:flex ml-3">
-              <SignedIn>
-                <UserButton 
-                  afterSignOutUrl="/"
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-10 h-10"
-                    }
-                  }}
-                />
-              </SignedIn>
-              <SignedOut>
-                <SignInButton mode="modal">
-                  <button className="bg-primary hover:bg-primary-dark text-white font-medium rounded-lg px-4 py-2 text-sm">
-                    Sign in
-                  </button>
-                </SignInButton>
-              </SignedOut>
-            </div>
+            <Link href="/profile" className="hidden md:flex ml-3">
+              <div className="w-10 h-10 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                <span className="font-semibold">AB</span>
+              </div>
+            </Link>
           </div>
         </div>
         
@@ -122,37 +107,15 @@ export default function Header() {
         {isMenuOpen && (
           <div className="py-3 md:hidden">
             <h1 className="text-xl font-poppins font-semibold mb-2">{getTitle()}</h1>
-            
-            <SignedIn>
-              <div className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-700">
-                <span className="font-medium">Account</span>
-                <UserButton 
-                  afterSignOutUrl="/"
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-8 h-8"
-                    }
-                  }}
-                />
-              </div>
-            </SignedIn>
-            
-            <SignedOut>
-              <div className="py-2 border-b border-slate-100 dark:border-slate-700">
-                <SignInButton mode="modal">
-                  <button className="bg-primary hover:bg-primary-dark text-white font-medium rounded-lg px-4 py-2 text-sm w-full">
-                    Sign in
-                  </button>
-                </SignInButton>
-              </div>
-            </SignedOut>
-            
             <Link 
-              href="/community" 
+              href="/profile" 
               className="flex items-center py-2 border-b border-slate-100 dark:border-slate-700"
               onClick={() => setIsMenuOpen(false)}
             >
-              <span className="font-medium">Community</span>
+              <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center mr-3">
+                <span className="font-semibold text-sm">AB</span>
+              </div>
+              <span className="font-medium">Profile</span>
             </Link>
           </div>
         )}

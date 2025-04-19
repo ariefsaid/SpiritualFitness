@@ -1,16 +1,14 @@
 
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 import { NextResponse, type NextRequest } from 'next/server';
 
-// Define routes that should be protected (require authentication)
-const isProtectedRoute = createRouteMatcher([
-  '/community(.*)', // Protect the community page and all its sub-routes
-  '/api/protected/(.*)', // Protect certain API routes
-]);
+export const config = {
+  matcher: [
+    // Protected pages and API routes that need auth
+    '/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|api/manifest|service-worker.js|workbox-*.js|robots.txt|sitemap.xml|api/auth/login|api/auth/register|api/auth/me|api/test).*)',
+  ],
+};
 
-// Clerk middleware to handle authentication
-export default clerkMiddleware(async (auth, request) => {
-  const { userId } = await auth();
+export default async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
   
   // Add security headers
@@ -23,31 +21,44 @@ export default clerkMiddleware(async (auth, request) => {
   headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
-  // We cannot directly modify the request.headers (it's read-only)
-  // But we'll pass the headers forward to the NextResponse
+  // Public pages that don't need auth
+  const publicPaths = [
+    '/', 
+    '/login', 
+    '/register',
+    '/offline'
+  ];
   
-  // Check if the route is protected and the user is not authenticated
-  if (isProtectedRoute(request) && !userId) {
-    // Redirect unauthenticated users to sign-in
-    const signInUrl = new URL('/sign-in', request.url);
-    signInUrl.searchParams.set('redirect_url', encodeURI(request.url));
-    return NextResponse.redirect(signInUrl);
-  }
+  const isPublicPath = publicPaths.some(pp => 
+    path === pp || 
+    path.startsWith('/static') || 
+    path.startsWith('/_next')
+  );
   
-  // Allow the request to proceed
-  return NextResponse.next({
-    request: {
-      headers,
-    },
-  });
-});
+  // Check for user_id cookie (our custom auth system)
+  const hasAuth = request.cookies.has('user_id');
 
-// Configure which routes the middleware should run on
-export const config = {
-  matcher: [
-    // Skip Next.js internals and static files
-    '/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|api/manifest|service-worker.js|workbox-*.js|robots.txt|sitemap.xml).*)',
-    // Always run for API routes
-    '/api/(.*)',
-  ],
-};
+  // Allow access to public paths or if user is authenticated
+  if (isPublicPath || hasAuth) {
+    return NextResponse.next({
+      request: {
+        headers,
+      },
+    });
+  }
+
+  // Handle API routes that need auth differently
+  if (path.startsWith('/api/')) {
+    // If it's an API route requiring auth, let the API handle auth errors
+    return NextResponse.next({
+      request: {
+        headers,
+      },
+    });
+  }
+
+  // Redirect unauthenticated users to login
+  const url = new URL('/login', request.url);
+  url.searchParams.set('callbackUrl', encodeURI(request.url));
+  return NextResponse.redirect(url);
+}

@@ -1,33 +1,34 @@
 import { drizzle } from 'drizzle-orm/neon-serverless';
-import { Pool, PoolClient } from '@neondatabase/serverless';
-import * as schema from '@/lib/schema';
+import { neon, neonConfig } from '@neondatabase/serverless';
+import * as schema from './schema';
 
-let _client: PoolClient | null = null;
-let _db: ReturnType<typeof drizzle> | null = null;
+// Environment variables with defaults for development
+const DATABASE_URL = process.env.DATABASE_URL || 'postgresql://user:password@localhost:5432/spiritualfit';
+
+// Configure neon
+neonConfig.fetchConnectionCache = true;
+
+// Initialize database connection (server-side only)
+let db: ReturnType<typeof initializeDb> | null = null;
 
 function initializeDb() {
-  try {
-    if (!process.env.DATABASE_URL) {
-      throw new Error('DATABASE_URL environment variable is not set');
-    }
-
-    // Create a connection pool
-    const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-    
-    // Create a database client
-    _db = drizzle(pool, { schema });
-    
-    console.log('🔌 Connected to database successfully');
-    return _db;
-  } catch (error) {
-    console.error('❌ Failed to connect to database:', error);
-    throw error;
+  const sql = DATABASE_URL ? neon(DATABASE_URL) : null;
+  
+  if (!sql) {
+    console.warn('No DATABASE_URL found. Using in-memory storage instead.');
+    return null;
   }
+  
+  // Create and return drizzle database instance
+  // Using 'as any' to fix type issues with NeonQueryFunction
+  return drizzle(sql as any, { schema });
 }
 
+// Lazy initialization of database
 export function getDb() {
-  if (!_db) {
-    return initializeDb();
+  // This will only run on the server
+  if (typeof window === 'undefined' && !db) {
+    db = initializeDb();
   }
-  return _db;
+  return db;
 }
